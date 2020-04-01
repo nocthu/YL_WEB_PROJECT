@@ -1,4 +1,5 @@
 from flask import Flask, render_template, redirect
+from flask_login import LoginManager, login_user
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, BooleanField, SubmitField, TextAreaField
 from wtforms.validators import DataRequired
@@ -8,6 +9,8 @@ from data.users import User
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'yandexlyceum_secret_key'
+login_manager = LoginManager()
+login_manager.init_app(app)
 
 
 def main():
@@ -16,7 +19,7 @@ def main():
 
 
 class LoginForm(FlaskForm):
-    username = StringField('Логин', validators=[DataRequired()])
+    email = EmailField('Почта', validators=[DataRequired()])
     password = PasswordField('Пароль', validators=[DataRequired()])
     remember_me = BooleanField('Запомнить меня')
     submit = SubmitField('Войти')
@@ -31,8 +34,19 @@ class RegisterForm(FlaskForm):
     submit = SubmitField('Войти')
 
 
+@login_manager.user_loader
+def load_user(user_id):
+    session = db_session.create_session()
+    return session.query(User).get(user_id)
+
+
+@app.route('/')
+def home():
+    return render_template('home.html')
+
+
 @app.route('/water', methods=['GET', 'POST'])
-def homepage():
+def mainpage():
     return render_template('base.html')
 
 
@@ -40,7 +54,14 @@ def homepage():
 def login():
     form = LoginForm()
     if form.validate_on_submit():
-        return redirect('/water')
+        session = db_session.create_session()
+        user = session.query(User).filter(User.email == form.email.data).first()
+        if user and user.check_password(form.password.data):
+            login_user(user, remember=form.remember_me.data)
+            return redirect("/water")
+        return render_template('login.html',
+                               message="Неправильный логин или пароль",
+                               form=form)
     return render_template('login.html', title='Авторизация', form=form)
 
 
@@ -65,8 +86,13 @@ def reqister():
         user.set_password(form.password.data)
         session.add(user)
         session.commit()
-        return redirect('/login')
+        return redirect('/water')
     return render_template('register.html', title='Регистрация', form=form)
+
+
+@app.route('/m', methods=['GET', 'POST'])
+def m():
+    return render_template('index.html')
 
 
 if __name__ == '__main__':

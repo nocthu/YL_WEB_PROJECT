@@ -7,22 +7,25 @@
           href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
           integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
           crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="{url_for('static', filename='css/style.css')}" />
     <title>Водный баланс</title>
 </head>
 <body>
 <header>
     <nav class="navbar navbar-light bg-light">
-        <a class="navbar-brand" href="#">Наше приложение</a>
+        <a class="navbar-brand" href="#">WEB PROJECT</a>
     </nav>
 </header>
 <!-- Begin page content -->
 <main role="main" class="container">
     {% block content %}{% endblock %}
 </main>
-<footer>Авторы:
+<footer class="p-3 mb-2 bg-info text-white"r>
+    <h4>Авторы:</h4>
 <ul>
     <li>Родионов Денис</li>
     <li>Евсеев Григорий</li>
-</ul></footer>
+</ul>
+</footer>
 </body>
 </html>
