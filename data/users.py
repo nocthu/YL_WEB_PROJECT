@@ -18,6 +18,16 @@ class User(SqlAlchemyBase, UserMixin):
     created_date = sqlalchemy.Column(sqlalchemy.DateTime,
                                      default=datetime.datetime.now)
 
+    # sex = sqlalchemy.Column(sqlalchemy.String, nullable=True)
+    # weight = sqlalchemy.Column(sqlalchemy.Integer, nullable=True)
+    # if sex == 'м':
+    #     need_to_drink = 35
+    # else:
+    #     need_to_drink = 31
+    # need_to_drink *= weight
+    # need_to_drink /= 1000
+
+
     def set_password(self, password):
         self.hashed_password = generate_password_hash(password)
 
