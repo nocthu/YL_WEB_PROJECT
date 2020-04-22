@@ -1,7 +1,7 @@
 from flask import Flask, render_template, redirect
 from flask_login import LoginManager, login_user
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, BooleanField, SubmitField, TextAreaField
+from wtforms import StringField, PasswordField, BooleanField, SubmitField, TextAreaField, RadioField
 from wtforms.validators import DataRequired
 from wtforms.fields.html5 import EmailField
 from data import db_session
@@ -31,6 +31,8 @@ class RegisterForm(FlaskForm):
     password_again = PasswordField('Повторите пароль', validators=[DataRequired()])
     name = StringField('Имя пользователя', validators=[DataRequired()])
     about = TextAreaField("Немного о себе")
+    # sex = RadioField('Пол', choices=('М', 'Ж'))
+    # weight = TextAreaField('Вес')
     submit = SubmitField('Войти')
 
 
@@ -81,7 +83,9 @@ def reqister():
         user = User(
             name=form.name.data,
             email=form.email.data,
-            about=form.about.data
+            about=form.about.data,
+            # sex=form.sex.data,
+            # weight=form.weight.data
         )
         user.set_password(form.password.data)
         session.add(user)
@@ -97,11 +101,3 @@ def m():
 
 if __name__ == '__main__':
     main()
-
-user = User()
-user.name = "Пользователь 1"
-user.about = "биография пользователя 1"
-user.email = "email@email.ru"
-session = db_session.create_session()
-session.add(user)
-session.commit()
