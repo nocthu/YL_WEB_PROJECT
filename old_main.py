@@ -7,6 +7,8 @@ from wtforms.fields.html5 import EmailField
 from data import db_session
 from data.users import User
 
+from Constants import *
+
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'yandexlyceum_secret_key'
 login_manager = LoginManager()
