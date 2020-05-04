@@ -54,6 +54,11 @@ def mainpage():
     return render_template('base.html')
 
 
+@app.route('/home', methods=['GET', 'POST'])
+def choose():
+    return render_template('choose_service.html')
+
+
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     form = LoginForm()
@@ -62,7 +67,7 @@ def login():
         user = session.query(User).filter(User.email == form.email.data).first()
         if user and user.check_password(form.password.data):
             login_user(user, remember=form.remember_me.data)
-            return redirect("/water")
+            return redirect("/home")
         return render_template('login.html',
                                message="Неправильный логин или пароль",
                                form=form)
@@ -92,13 +97,8 @@ def reqister():
         user.set_password(form.password.data)
         session.add(user)
         session.commit()
-        return redirect('/water')
+        return redirect('/home')
     return render_template('register.html', title='Регистрация', form=form)
-
-
-@app.route('/m', methods=['GET', 'POST'])
-def m():
-    return render_template('index.html')
 
 
 if __name__ == '__main__':

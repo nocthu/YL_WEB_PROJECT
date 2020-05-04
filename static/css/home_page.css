@@ -1,15 +1,19 @@
-.base {
-background-color: #008080;
-text-color: #FFFFE0;
-}
-
-.m {
-font-family: "courier";
-background-color: #008080;
-text-color: #FFFFE0;
-}
 
 h1{
 font-size: 54px;
 font-family: "courier";
-text-align: center;
+text-align: center
+}
+
+h5 {
+font-size: 15px;
+font-family: "courier";
+text-align: center
+}
+
+.container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+}
