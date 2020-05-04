@@ -52,12 +52,16 @@
     </p>
 <!--    <p>-->
 <!--        {{ form.sex.label }}<br>-->
-<!--        {{ form.sex(class="form-control") }}<br>-->
-<!--        {% for error in form.about.errors %}-->
-<!--            <p class="alert alert-danger" role="alert">-->
-<!--                {{ error }}-->
-<!--            </p>-->
-<!--        {% endfor %}-->
+<!--        {{ form.sex(class="form-group") }}<br>-->
+        <select multiple class="form-control" id="exampleFormControlSelect2">
+            <option>М</option>
+            <option>Ж</option>
+        </select>
+        {% for error in form.about.errors %}
+            <p class="alert alert-danger" role="alert">
+                {{ error }}
+            </p>
+        {% endfor %}
 <!--    </p>-->
 <!--    <p>-->
 <!--        {{ form.weight.label }}<br>-->

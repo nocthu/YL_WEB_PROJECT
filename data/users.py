@@ -13,7 +13,7 @@ class User(SqlAlchemyBase, UserMixin):
     name = sqlalchemy.Column(sqlalchemy.String, nullable=True)
     about = sqlalchemy.Column(sqlalchemy.String, nullable=True)
 
-    # sex = sqlalchemy.Column(sqlalchemy.String, nullable=True)
+    sex = sqlalchemy.Column(sqlalchemy.String, nullable=True)
     # weight = sqlalchemy.Column(sqlalchemy.Integer, nullable=True)
 
     email = sqlalchemy.Column(sqlalchemy.String,

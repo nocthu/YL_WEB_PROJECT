@@ -33,9 +33,9 @@ class RegisterForm(FlaskForm):
     password_again = PasswordField('Повторите пароль', validators=[DataRequired()])
     name = StringField('Имя пользователя', validators=[DataRequired()])
     about = TextAreaField("Немного о себе")
-    # sex = RadioField('Пол', choices=('М', 'Ж'))
+    sex = RadioField('Пол', choices=[('', 'М'), ('', 'Ж')])
     # weight = TextAreaField('Вес')
-    submit = SubmitField('Войти')
+    submit = SubmitField('Зарегистрироваться')
 
 
 @login_manager.user_loader
@@ -78,27 +78,28 @@ def login():
 def reqister():
     form = RegisterForm()
     if form.validate_on_submit():
+        print(form.sex.data)
         if form.password.data != form.password_again.data:
-            return render_template('register.html', title='Регистрация',
+            return render_template('r_1.html', title='Регистрация',
                                    form=form,
                                    message="Пароли не совпадают")
         session = db_session.create_session()
         if session.query(User).filter(User.email == form.email.data).first():
-            return render_template('register.html', title='Регистрация',
+            return render_template('r_1.html', title='Регистрация',
                                    form=form,
                                    message="Такой пользователь уже есть")
         user = User(
             name=form.name.data,
             email=form.email.data,
             about=form.about.data,
-            # sex=form.sex.data,
+            sex=form.sex.data,
             # weight=form.weight.data
         )
         user.set_password(form.password.data)
         session.add(user)
         session.commit()
         return redirect('/home')
-    return render_template('register.html', title='Регистрация', form=form)
+    return render_template('r_1.html', title='Регистрация', form=form)
 
 
 if __name__ == '__main__':
