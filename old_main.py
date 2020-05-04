@@ -32,7 +32,6 @@ class RegisterForm(FlaskForm):
     password = PasswordField('Пароль', validators=[DataRequired()])
     password_again = PasswordField('Повторите пароль', validators=[DataRequired()])
     name = StringField('Имя пользователя', validators=[DataRequired()])
-    about = TextAreaField("Немного о себе")
     sex = RadioField('Пол', choices=[('М', 'М'), ('Ж', 'Ж')])
     weight = StringField('Вес')
     submit = SubmitField('Зарегистрироваться')
@@ -78,7 +77,6 @@ def login():
 def reqister():
     form = RegisterForm()
     if form.validate_on_submit():
-        print(form.sex.data)
         if form.password.data != form.password_again.data:
             return render_template('r_1.html', title='Регистрация',
                                    form=form,
@@ -91,7 +89,6 @@ def reqister():
         user = User(
             name=form.name.data,
             email=form.email.data,
-            about=form.about.data,
             sex=form.sex.data,
             weight=form.weight.data
         )
