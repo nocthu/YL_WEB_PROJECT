@@ -74,7 +74,7 @@ def login():
 
 @app.route('/waterbalance', methods=['GET', 'POST'])
 def waterbalance():
-    return render_template('base.html')
+    return render_template('waterbalance.html')
 
 
 @app.route('/places')
