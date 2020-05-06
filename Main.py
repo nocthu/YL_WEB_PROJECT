@@ -72,6 +72,11 @@ def login():
     return render_template('login.html', title='Авторизация', form=form)
 
 
+@app.route('/some_note', methods=['GET', 'POST'])
+def some_note():
+    return render_template('some_note.html')
+
+
 @app.route('/waterbalance', methods=['GET', 'POST'])
 def waterbalance():
     return render_template('waterbalance.html')
