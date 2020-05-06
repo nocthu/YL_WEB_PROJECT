@@ -72,6 +72,21 @@ def login():
     return render_template('login.html', title='Авторизация', form=form)
 
 
+@app.route('/waterbalance', methods=['GET', 'POST'])
+def waterbalance():
+    return render_template('base.html')
+
+
+@app.route('/places')
+def places():
+    return render_template('places.html')
+
+
+@app.route('/weather')
+def weather():
+    return render_template('weather.html')
+
+
 if __name__ == '__main__':
     user = DataBaseUser()
     user.init_table()
