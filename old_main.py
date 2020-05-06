@@ -32,7 +32,7 @@ class RegisterForm(FlaskForm):
     password = PasswordField('Пароль', validators=[DataRequired()])
     password_again = PasswordField('Повторите пароль', validators=[DataRequired()])
     name = StringField('Имя пользователя', validators=[DataRequired()])
-    sex = RadioField('Пол', choices=[('М', 'М'), ('Ж', 'Ж')])
+    sex = RadioField('Пол', choices=[(0.035, 'М'), (0.031, 'Ж')])
     weight = StringField('Вес')
     submit = SubmitField('Зарегистрироваться')
 

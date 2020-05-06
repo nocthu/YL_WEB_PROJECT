@@ -19,10 +19,14 @@ def main():
     app.run()
 
 
-@app.route('/home')
 @app.route('/')
 def home():
     return render_template('home.html')
+
+
+@app.route('/home', methods=['GET', 'POST'])
+def choose():
+    return render_template('choose_service.html')
 
 
 @app.route('/registration', methods=['GET', 'POST'])
@@ -43,7 +47,7 @@ def registration():
 
         user.insert(form.email.data, form.name.data, form.password.data, form.sex.data, form.weight.data)
         # session.commit()
-        return redirect('/')
+        return redirect('/home')
 
     #
     #    user.set_password(form.password.data)
@@ -64,7 +68,7 @@ def login():
         if exists[0]:
             session['email'] = email
             session['user_id'] = exists[1]
-            return redirect("/home")
+            return redirect('/home')
     return render_template('login.html', title='Авторизация', form=form)
 
 
