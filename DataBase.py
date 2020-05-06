@@ -28,16 +28,22 @@ class DataBaseUser(DataBase):
                              user_name VARCHAR(50),
                              password_hash VARCHAR(128),
                              sex VARCHAR(50),
-                             weight VARCHAR(50)
+                             weight VARCHAR(50),
+                             water VARCHAR(50)
                              )''')
         cursor.close()
         self.connection.commit()
 
     def insert(self, email, user_name, password_hash, sex, weight):
         cursor = self.connection.cursor()
+        if sex == 'Ж':
+            sex = (31, 'Ж')
+        else:
+            sex = (35, 'М')
         cursor.execute('''INSERT INTO users 
-                          (email, user_name, password_hash, sex, weight) 
-                          VALUES (?,?,?,?,?)''', (email, user_name, password_hash, sex, weight))
+                          (email, user_name, password_hash, sex, weight, water) 
+                          VALUES (?,?,?,?,?,?)''',
+                       (email, user_name, password_hash, sex[1], weight, int(weight) * sex[0]))
         cursor.close()
         self.connection.commit()
 
