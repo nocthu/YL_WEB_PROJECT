@@ -23,7 +23,8 @@
             </ul>
         </nav>
     </header>
-<main>
+<main role="main">
+    {% block content %}
     <h2>Waterbalance</h2>
     <div>
         <label for="classSelect">Укажите напиток</label>
@@ -107,6 +108,7 @@
             </label>
         </div>
     </div>
+    {% endblock %}
 </main>
 </body>
 </html>

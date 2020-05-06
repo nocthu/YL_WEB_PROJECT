@@ -1,29 +1,6 @@
-<!doctype html>
-<html lang="en">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link rel="stylesheet"
-          href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
-          integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
-          crossorigin="anonymous">
-<!--    <link rel="stylesheet" type="text/css" href="static/css/style.css" />-->
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/first.css') }}">
-<!--    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">-->
-    <title>RE:SERVICES</title>
-</head>
-<body>
-    <header>
-        <a class="navbar bg-light navbar-brand" href="">RE:SERVICES</a>
-        <nav>
-            <ul>
-                <li><a href="/waterbalance">Waterbalance</a></li>
-                <li><a href="/places">Places</a></li>
-                <li><a href="/weather">Weather</a></li>
-            </ul>
-        </nav>
-    </header>
-<main>
+{% extends "waterbalance.html" %}
+
+{% block content %}
     <h2>RE:SERVICES</h2>
     <p>
     RE:SERVICES  - это проект под авторством учеников второго года ЯндексЛицея
@@ -52,6 +29,4 @@
     <p>Сервис с подборками интересных мест Вашего города для интересных прогулок.</p>
     <h3>Weather</h3>
     <p>Сервис с прогнозом погоды.</p>
-</main>
-</body>
-</html>
+{% endblock %}
