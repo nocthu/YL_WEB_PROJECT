@@ -24,17 +24,20 @@ class DataBaseUser(DataBase):
         cursor = self.connection.cursor()
         cursor.execute('''CREATE TABLE IF NOT EXISTS users 
                             (id INTEGER PRIMARY KEY AUTOINCREMENT, 
+                             email VARCHAR(50),
                              user_name VARCHAR(50),
-                             password_hash VARCHAR(128)
+                             password_hash VARCHAR(128),
+                             sex VARCHAR(50),
+                             weight VARCHAR(50)
                              )''')
         cursor.close()
         self.connection.commit()
 
-    def insert(self, user_name, password_hash):
+    def insert(self, email, user_name, password_hash, sex, weight):
         cursor = self.connection.cursor()
         cursor.execute('''INSERT INTO users 
-                          (user_name, password_hash) 
-                          VALUES (?,?)''', (user_name, password_hash))
+                          (email, user_name, password_hash, sex, weight) 
+                          VALUES (?,?,?,?,?)''', (email, user_name, password_hash, sex, weight))
         cursor.close()
         self.connection.commit()
 
@@ -50,10 +53,10 @@ class DataBaseUser(DataBase):
         rows = cursor.fetchall()
         return rows
 
-    def exists(self, user_name, password_hash):
+    def exists(self, email, password_hash):
         cursor = self.connection.cursor()
-        cursor.execute("SELECT * FROM users WHERE user_name = ? AND password_hash = ?",
-                       (user_name, password_hash))
+        cursor.execute("SELECT * FROM users WHERE email = ? AND password_hash = ?",
+                       (email, password_hash))
         row = cursor.fetchone()
         return (True, row[0]) if row else (False,)
 
