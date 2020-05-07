@@ -2,34 +2,27 @@
 
 {% block content %}
 <body>
-<h3>Название</h3>
+<center><h3>Название</h3></center>>
 <form method="post" enctype="multipart/form-data">
     <div class="row">
         <div class="col-md-6">
-            <input type="str" class="form-control" id="name" name="name">
-            <h3>Сложность</h3><select type="int" class="form-control" id="hard" name="hard">
-            <option>1</option>
-            <option>2</option>
-            <option>3</option>
-            <option>4</option>
-            <option>5</option>
-        </select>
+            <center><input type="str" class="form-control" id="name" name="name"></center>
         </div>
     </div>
     <div class="row">
         <div class="col-md-10">
-            <h3>Совет</h3>
-            <textarea class="form-control w-100 h-10" id="recipe" rows="10" name="recipe"></textarea>
+            <center><h3>Совет</h3></center>>
+            <center><textarea class="form-control w-100 h-10" id="advice" rows="10" name="advice"></textarea></center>
         </div>
     </div>
     <div class="row">
         <div class="col-md-4">
-            <h5>Загрузите фотографию</h5>
-            <input type="file" class="form-control-file" id="photo" name="file">
+            <center><h5>Загрузите фотографию</h5></center>
+            <center><input type="file" class="form-control-file" id="photo" name="file"></center>
         </div>
     </div>
     <div>
-        <button type="submit" class="btn btn-primary">Добавить</button>
+        <center><button type="submit" class="btn btn-primary">Добавить</button></center>
     </div>
 </form>
 </body>
