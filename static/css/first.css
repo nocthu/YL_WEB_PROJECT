@@ -37,11 +37,14 @@ ul li a {
     text-transform: uppercase;
     text-decoration: none;
     line-height: 50px;
+    transition: all 0.3s ease;
 }
 
 ul li a:hover {
     background: #696969;
     color: #fff;
+    box-shadow: 1px 5px 10px -5px black;
+    transition: all 0.3s ease;
 }
 
 $(function () {

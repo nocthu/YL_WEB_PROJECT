@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet"
+          href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+          integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
+          crossorigin="anonymous">
+<!--    <link rel="stylesheet"-->
+<!--          href="bootstrap.bundle.min.js / bootstrap.bundle.js">-->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/second.css') }}">
+    <title>RE:SERVICES</title>
+    <style>
+        body {
+        background-image: url("/static/img/city.png");
+        }
+
+        header {
+            margin-left: 0;
+            font-family: "Verdana";
+            font-weight: 450;
+        }
+
+        .dws-menu {
+            margin: 0;
+            padding: 0;
+        }
+
+        .dws-menu ul,
+        .dws-menu ol {
+            list-style: none;
+        }
+
+        .dws-menu > ul {
+            display: flex;
+            justify-content: center;
+        }
+
+        .dws-menu > ul li a{
+            display: block;
+            background: #fff;
+            padding: 15px 30px 15px 40px;
+            font-size: 14px;
+            color: #696969;
+            text-decoration: none;
+            text-transform: uppercase;
+            transition: all 0.3s ease;
+        }
+
+         .dws-menu > ul li {
+            position: relative;
+            border-right: 1px solid #696969;
+        }
+
+        .dws-menu > ul li:first-child {
+            border-left: 1px solid #696969;
+        }
+
+        .dws-menu > ul li:last-child {
+            border-left: 1px solid #696969;
+        }
+
+        .dws-menu li a:hover {
+            background: #696969;
+            color: #fff;
+            box-shadow: 1px 5px 10px -5px black;
+            transition: all 0.3s ease;
+        }
+
+        .dws-menu li ul {
+            margin: 0;
+            padding: 0;
+            position: absolute;
+            min-width: 150px;
+            display: none;
+
+        }
+
+        .dws-menu li > ul li {
+            margin: 0;
+            padding: 0;
+            border: 1px solid #696969;
+        }
+
+        .dws-menu li > ul li a {
+            padding: 10px;
+            text-transform: none;
+        }
+
+        .dws-menu li:hover > ul {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav class="dws-menu">
+            <ul>
+                <li>
+                    <a href="#" class="fa fa-">RE:SERVICES</a>
+                    <ul>
+                        <li><a href="/some_note" class="fa fa-">О проекте</a></li>
+                        <li><a href="/home" class="fa fa-">Вернуться на Начальную страницу</a></li>
+                    </ul>
+                </li>
+                <li><a href="/waterbalance" class="fa fa-">Waterbalance</a></li>
+                <li><a href="/places" class="fa fa-">Places</a></li>
+                <li><a href="/weather" class="fa fa-cloud-sun">Weather</a></li>
+                <li><a href="/advices" class="fa fa-">Advices</a></li>
+            </ul>
+        </nav>
+    </header>
+<main role="main">
+    {% block content %}
+    <h1>Добро пожаловать</h1>
+    {% endblock %}
+</main>
+</body>
+</html>

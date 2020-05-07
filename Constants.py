@@ -3,10 +3,13 @@ WRITE = 2
 EXECUTE = 4
 
 GUEST = 0
-STATUS = 7
 USER = READ
 MODERATOR = READ | WRITE
 ADMIN = READ | WRITE | EXECUTE
+
+
+STATUS = 7
+USERNAME = 1
 
 if __name__ == '__main__':
     print(USER & READ, USER & WRITE, USER & EXECUTE)
