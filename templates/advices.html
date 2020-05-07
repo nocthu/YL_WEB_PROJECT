@@ -17,14 +17,10 @@
         <br>
         <b>Название:&nbsp;</b>
         {{item[1]}}<br>
-        <b>Рецепт:&nbsp;</b>
+        <b>Совет:&nbsp;</b>
         {{item[2]}}<br>
-        <b>Ингридиенты:&nbsp;</b>
-        {{item[3]}}<br>
-        <b>Сложность:&nbsp;</b>
-        {{item[4]}}<br>
-        {% if write %}
-        <a href="/delete_recipe/{{item[0]}}">Удалить рецепт</a>
+        {% if execute %}
+        <a href="/delete_recipe/{{item[0]}}">Удалить совет</a>
         {% endif %}
     </div>
     <div class="col-md-4">

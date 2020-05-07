@@ -1,3 +1,5 @@
+import os
+
 from flask import Flask, render_template, redirect, session, request
 from flask_login import LoginManager, login_user
 from flask_wtf import FlaskForm
@@ -102,11 +104,6 @@ def weather():
         return render_template('weather.html')
     return render_template('home.html')
 
-@app.route('/advices')
-def advices():
-    if int(session.get('status', GUEST)) & READ:
-        return render_template('advices.html')
-    return render_template('home.html')
 
 @app.route('/advices')
 def advice():
@@ -122,7 +119,7 @@ def add_advice():
     if request.method == 'GET':
         return render_template('add_advice.html')
     elif request.method == 'POST':
-        if 'username' not in session:
+        if 'user_name' not in session:
             return redirect('/login')
         title = request.form['name']
         content = request.form['advice']
@@ -135,6 +132,16 @@ def add_advice():
             advices.insert(title, content, photo, session['user_id'])
             return redirect("/advices")
         return render_template('not_enough.html')
+
+
+@app.route('/delete_advice/<int:news_id>', methods=['GET'])
+def delete_book(news_id):
+    if 'user_name' not in session:
+        return redirect('/login')
+    all = advices.get(news_id)
+    os.remove(all[FILE])
+    advices.delete(news_id)
+    return redirect("/")
 
 
 if __name__ == '__main__':
