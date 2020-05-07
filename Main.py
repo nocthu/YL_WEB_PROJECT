@@ -1,4 +1,4 @@
-from flask import Flask, render_template, redirect, session
+from flask import Flask, render_template, redirect, session, request
 from flask_login import LoginManager, login_user
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, BooleanField, SubmitField, TextAreaField, RadioField
@@ -8,8 +8,8 @@ from data import db_session
 from data.users import User
 
 from Constants import *
-from DataBase import DataBase, DataBaseUser
-from Forms import RegisterForm, LoginForm
+from DataBase import DataBaseUser, Advices
+from Forms import RegisterForm, LoginForm, NewsForm
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'yandexlyceum_secret_key'
@@ -23,7 +23,7 @@ def main():
 def home():
     # print(session.get('status', 0))
     if int(session.get('status', GUEST)) & READ:
-        print(1)
+        return render_template('choose_service.html')
 
     return render_template('home.html')
 
@@ -63,10 +63,19 @@ def login():
         exists = user.exists(email, password)
         if exists[0]:
             session['email'] = email
+            session['user_name'] = user.get(exists[1])[USERNAME]
             session['status'] = user.get(exists[1])[STATUS]
             session['user_id'] = exists[1]
             return redirect('/home')
     return render_template('login.html', title='Авторизация', form=form)
+
+
+@app.route('/logout')
+def logout():
+    session.pop('user_name', 0)
+    session.pop('status', 0)
+    session.pop('user_id', 0)
+    return redirect('/')
 
 
 @app.route('/some_note', methods=['GET', 'POST'])
@@ -95,7 +104,41 @@ def weather():
     return render_template('home.html')
 
 
+@app.route('/advices')
+def advice():
+    all = advices.get_all()
+    return render_template('advices.html',
+                           advices=all,
+                           write=(int(session.get('status', GUEST)) & WRITE),
+                           execute=(int(session.get('status', GUEST)) & EXECUTE))
+
+
+@app.route('/add_advice', methods=['GET', 'POST'])
+def add_advice():
+    if request.method == 'GET':
+        return render_template('add_advice.html')
+    elif request.method == 'POST':
+        if 'username' not in session:
+            return redirect('/login')
+        title = request.form['name']
+        content = request.form['advice']
+        if title != '' and content != '':
+            if request.files.get('file', None):
+                photo = 'static/images/' + request.files['file'].filename
+                request.files['file'].save(photo)
+            else:
+                return render_template('not_enough.html')
+            advices.insert(title, content, photo, session['user_id'])
+            return redirect("/advices")
+        return render_template('not_enough.html')
+
+
 if __name__ == '__main__':
+
     user = DataBaseUser()
     user.init_table()
+
+    advices = Advices()
+    advices.init_table()
+
     main()

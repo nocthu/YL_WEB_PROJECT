@@ -68,33 +68,31 @@ class DataBaseUser(DataBase):
         return (True, row[0]) if row else (False,)
 
 
-class Advices:
-    def __init__(self, connection):
-        self.connection = connection
+class Advices(DataBase):
+    def __init__(self):
+        super().__init__()
+        self.connection = self.get_connection()
 
     def init_table(self):
         cursor = self.connection.cursor()
-        cursor.execute('''CREATE TABLE IF NOT EXISTS advises 
+        cursor.execute('''CREATE TABLE IF NOT EXISTS advices 
                             (id INTEGER PRIMARY KEY AUTOINCREMENT, 
                              name VARCHAR(100),
                              content VARCHAR(1000),
-                             ingrid VARCHAR(100),
                              photo VARCHAR(100),
-                             hard INTEGER,
-                             date,
                              user_id INTEGER
                              )''')
         cursor.close()
         self.connection.commit()
 
-    def insert(self, name, content, ingrid, photo, hard, user_id):
+    def insert(self, name, content, photo, user_id):
         cursor = self.connection.cursor()
         date = int(str(datetime.date.today()).split('-')[0]) * 364 + int(
             str(datetime.date.today()).split('-')[1]) * 30 + int(
             str(datetime.date.today()).split('-')[2])
         cursor.execute('''INSERT INTO advices 
-                          (name, content, ingrid, photo,hard,date, user_id) 
-                          VALUES (?,?,?,?,?,?,?)''', (name, content, ingrid, photo, hard, date, str(user_id)))
+                          (name, content, photo, date, user_id) 
+                          VALUES (?,?,?,?,?)''', (name, content, photo, date, str(user_id)))
         cursor.close()
         self.connection.commit()
 
@@ -106,7 +104,7 @@ class Advices:
 
     def get_all(self):
         cursor = self.connection.cursor()
-        cursor.execute("SELECT * FROM advices ORDER BY name ASC")
+        cursor.execute("SELECT * FROM advices")
         rows = cursor.fetchall()
         return rows
 
