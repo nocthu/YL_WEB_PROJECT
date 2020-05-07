@@ -108,6 +108,7 @@ def weather():
 @app.route('/advices')
 def advice():
     all = advices.get_all()
+    print(int(session.get('status', GUEST)) & WRITE, int(session.get('status', GUEST)) & EXECUTE)
     return render_template('advices.html',
                            advices=all,
                            write=(int(session.get('status', GUEST)) & WRITE),
@@ -141,7 +142,7 @@ def delete_book(news_id):
     all = advices.get(news_id)
     os.remove(all[FILE])
     advices.delete(news_id)
-    return redirect("/")
+    return redirect("/advices")
 
 
 if __name__ == '__main__':

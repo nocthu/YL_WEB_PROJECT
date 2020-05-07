@@ -2,8 +2,10 @@
 
 {% block content %}
 {% if "user_name" in session %}
-<a class="navbar-brand" href="/logout">Выход</a>{{session["user_name"]}}&nbsp;&nbsp;
-<a href="/add_advice">Добавить рецепт</a>
+    <a class="navbar-brand" href="/logout">Выход</a>{{session["user_name"]}}
+    {% if write %}
+        <a href="/add_advice">Добавить совет</a>
+    {% endif %}
 {% else %}
 <a class="navbar-brand" href="/login">Вход</a>
 {% endif %}
@@ -20,7 +22,7 @@
         <b>Совет:&nbsp;</b>
         {{item[2]}}<br>
         {% if execute %}
-        <a href="/delete_recipe/{{item[0]}}">Удалить совет</a>
+            <a href="/delete_advice/{{item[0]}}">Удалить совет</a>
         {% endif %}
     </div>
     <div class="col-md-4">
