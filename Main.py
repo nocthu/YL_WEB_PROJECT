@@ -94,6 +94,11 @@ def weather():
         return render_template('weather.html')
     return render_template('home.html')
 
+@app.route('/advices')
+def advices():
+    if int(session.get('status', GUEST)) & READ:
+        return render_template('advices.html')
+    return render_template('home.html')
 
 if __name__ == '__main__':
     user = DataBaseUser()
