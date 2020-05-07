@@ -38,3 +38,7 @@ ul li a {
 ul li a:hover {
     background: #d34d43;
 }
+
+$(function () {
+  $('[data-toggle="tooltip"]').tooltip()
+})

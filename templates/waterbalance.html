@@ -7,6 +7,8 @@
           href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
           integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
           crossorigin="anonymous">
+    <link rel="stylesheet"
+          href="bootstrap.bundle.min.js / bootstrap.bundle.js">
 <!--    <link rel="stylesheet" type="text/css" href="static/css/style.css" />-->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/first.css') }}">
 <!--    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">-->
@@ -26,27 +28,29 @@
 <main role="main">
     {% block content %}
     <h2>Waterbalance</h2>
-    <div>
-        <label for="classSelect">Укажите напиток</label>
-        <select class="form-control" id="classSelect" name="class">
-            <option>вода</option>
-            <option>минеральная вода</option>
-            <option>чай</option>
-            <option>черный кофе</option>
-            <option>сладкая газированная вода</option>
-            <option>сок</option>
-            <option>крепкий алкоголь</option>
-            <option>молоко</option>
-        </select>
+    <div class="progress">
+      <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar"
+        aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style="width: 75%"></div>
     </div>
+    <form>
+        <div class="form-row align-items-center">
+            <div class="col-auto my-1">
+                <label class="mr-sm-2" for="inlineFormCustomSelect">Укажите напиток</label>
+                <select class="custom-select mr-sm-2" id="inlineFormCustomSelect">
+                    <option selected>Напиток...</option>
+                    <option value="1">вода</option>
+                    <option value="2">минеральная вода</option>
+                    <option value="3">чай</option>
+                    <option value="4">черный кофе</option>
+                    <option value="5">сладкая газированная вода</option>
+                    <option value="6">сок</option>
+                    <option value="7">крепкий алкоголь</option>
+                    <option value="8">молоко</option>
+                </select>
+            </div>
+        </div>
     <div class="form-group">
         <label for="form-check">Укажите объем</label>
-        <div class="form-check">
-            <input class="form-check-input" type="radio" name="sex" id="male" value="male" checked>
-            <label class="form-check-label" for="male">
-                 0мл
-            </label>
-        </div>
         <div class="form-check">
             <input class="form-check-input" type="radio" name="sex" id="female" value="female">
             <label class="form-check-label" for="female">
@@ -108,6 +112,8 @@
             </label>
         </div>
     </div>
+        <button type="button" class="btn btn-primary btn-lg">Добавить</button>
+    </form>
     {% endblock %}
 </main>
 </body>

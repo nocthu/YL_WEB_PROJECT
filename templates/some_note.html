@@ -1,32 +1,58 @@
 {% extends "waterbalance.html" %}
 
 {% block content %}
-    <h2>RE:SERVICES</h2>
+    <h2>О проекте RE:SERVICES</h2>
     <p>
     RE:SERVICES  - это проект под авторством учеников второго года ЯндексЛицея
     </p>
-    <div>Родионова Дениса</div>
+    <button type="button" class="btn btn-secondary" data-toggle="tooltip" data-placement="bottom" title="Информация о Денисе Родионове">
+      Родионова Дениса
+    </button>
     и
-    <div>Евсеева Григория</div>
-    <h3>Почему такое название?</h3>
-    <h5>Причина 1.</h5>
-    <p>
-    Очевидно, что буквы R и E совпадают с началом фамилий авторов проекта.
-    </p>
-    <h5>Причина 2.</h5>
-    <p>
-    RE часто используется для обазначения чего-то цикличного или перерождения.
+    <button type="button" class="btn btn-secondary" data-toggle="tooltip" data-placement="bottom" title="Евсеев Григорий, 15 лет. нёllоヾ(´∇｀○)">
+        Евсеева Григория
+    </button>
+
+    <div class="card text-white bg-dark mb-3" style="max-width: 18rem;">
+        <div class="card-header">Почему такое название?</div>
+        <div class="card-body">
+            <h5 class="card-title">Причина 1.</h5>
+            <p class="card-text">Очевидно, что буквы R и E совпадают с началом фамилий авторов проекта.</p>
+        </div>
+    </div>
+    <div class="card bg-light mb-3" style="max-width: 18rem;">
+        <div class="card-header">Почему такое название?</div>
+        <div class="card-body">
+            <h5 class="card-title">Причина 2.</h5>
+            <p class="card-text">RE часто используется для обазначения чего-то цикличного или перерождения.
     А так как большая часть сервисов направлена на поддержвние здоровья  и ухода
-    за своим телом, то получается некое "перерождение в здоровом теле".
-    </p>
+    за своим телом, то получается некое "перерождение в здоровом теле".</p>
+        </div>
+    </div>
+
     <h3>Какая у проекта цель?</h3>
     <p>
     Его целью было создание Веб-сайта с различными услугами, а именно:
     </p>
-    <h3>Waterbalance</h3>
-    <p>Сервис для отслежки уровня воды в своем теле.</p>
-    <h3>Places</h3>
-    <p>Сервис с подборками интересных мест Вашего города для интересных прогулок.</p>
-    <h3>Weather</h3>
-    <p>Сервис с прогнозом погоды.</p>
+    <div class="card border-primary mb-3" style="max-width: 18rem;">
+        <div class="card-header">Сервис 1</div>
+        <div class="card-body">
+            <h5 class="card-title">Waterbalance</h5>
+            <p class="card-text">Сервис для отслежки уровня воды в своем теле.</p>
+        </div>
+    </div>
+    <div class="card border-success mb-3" style="max-width: 18rem;">
+        <div class="card-header">Сервис 2</div>
+        <div class="card-body">
+            <h5 class="card-title">Places</h5>
+            <p class="card-text">Сервис с подборками интересных мест Вашего города для интересных прогулок.</p>
+        </div>
+    </div>
+    <div class="card border-info mb-3" style="max-width: 18rem;">
+        <div class="card-header">Сервис 3</div>
+        <div class="card-body">
+            <h5 class="card-title">Weather</h5>
+            <p class="card-text">Сервис с прогнозом погоды.</p>
+        </div>
+    </div>
 {% endblock %}
