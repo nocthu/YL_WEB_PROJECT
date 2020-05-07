@@ -108,7 +108,6 @@ def weather():
 @app.route('/advices')
 def advice():
     all = advices.get_all()
-    print(int(session.get('status', GUEST)) & WRITE, int(session.get('status', GUEST)) & EXECUTE)
     return render_template('advices.html',
                            advices=all,
                            write=(int(session.get('status', GUEST)) & WRITE),
