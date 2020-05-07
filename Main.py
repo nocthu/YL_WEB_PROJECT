@@ -23,14 +23,13 @@ def main():
 def home():
     # print(session.get('status', 0))
     if int(session.get('status', GUEST)) & READ:
-        return render_template('choose_service.html')
-
-    return render_template('home.html')
+        return render_template('home.html')
+    return render_template('b_1.html')
 
 
 @app.route('/home', methods=['GET', 'POST'])
 def choose():
-    return render_template('choose_service.html')
+    return render_template('b_1.html')
 
 
 @app.route('/registration', methods=['GET', 'POST'])
