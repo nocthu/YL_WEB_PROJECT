@@ -1,25 +1,11 @@
 {% extends "waterbalance.html" %}
 
 {% block content %}
+<center><div class="content_1"><h1>Advices</h1></div></div></center>
 {% if "user_name" in session %}
-<!--    <p style="background: #fff; border: 3px solid #fff; border-radius: 10px;">-->
-<!--        <img class="card-img-top" src="/static/img/profile_pic.png" alt="Фото профиля." style="border-radius: 25%; width: 65px; height: 65px" align="bottom">-->
-<!--        {{session["user_name"]}}-->
-<!--    </p>-->
-
-    <a class="btn btn-dark" href="/logout">Выйти</a><br><br>
-        <div class="card text-white bg-secondary mb-3" style="max-width: 18rem;">
-             <div class="card-header"><img class="card-img-top" src="/static/img/profile_pic.png" alt="Фото профиля." style="border-radius: 25%; width: 50px; height: 50px" align="bottom">
-            {{session["user_name"]}}</div>
-        </div>
     {% if write %}
     <a class="btn btn-success" href="/add_advice">Добавить совет</a>
     {% endif %}
-{% else %}
-        <div class="card text-white bg-secondary mb-3" style="max-width: 18rem;">
-             <div class="card-header">Войдите в свой аккаунт</div>
-        </div>
-    <a class="btn btn-warning" href="/login">Войти</a>
 {% endif %}
 <div class="row">
     <br><br><br>
