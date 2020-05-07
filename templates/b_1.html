@@ -9,7 +9,7 @@
           crossorigin="anonymous">
 <!--    <link rel="stylesheet"-->
 <!--          href="bootstrap.bundle.min.js / bootstrap.bundle.js">-->
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/second.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/home.css') }}">
     <title>RE:SERVICES</title>
     <style>
         body {
@@ -91,6 +91,20 @@
         .dws-menu li:hover > ul {
             display: block;
         }
+
+
+        .h_1 {
+            border: 1px solid black;
+        }
+
+        .content_1 {
+            width: 75%;
+            background: #fff;
+        }
+
+        .for_some_note {
+            display: block-inline;
+        }
     </style>
 </head>
 <body>
@@ -113,7 +127,8 @@
     </header>
 <main role="main">
     {% block content %}
-    <h1>Добро пожаловать</h1>
+    </br></br></br></br></br>
+    <center><div class="content_1"><h1>Добро пожаловать</h1></div></div></center>
     {% endblock %}
 </main>
 </body>
