@@ -26,24 +26,25 @@ class DataBaseUser(DataBase):
                             (id INTEGER PRIMARY KEY AUTOINCREMENT, 
                              email VARCHAR(50),
                              user_name VARCHAR(50),
-                             password_hash VARCHAR(128),
+                             password VARCHAR(128),
                              sex VARCHAR(50),
                              weight VARCHAR(50),
-                             water VARCHAR(50)
+                             water VARCHAR(50),
+                             status VARCHAR(50)
                              )''')
         cursor.close()
         self.connection.commit()
 
-    def insert(self, email, user_name, password_hash, sex, weight):
+    def insert(self, email, user_name, password_hash, sex, weight, status):
         cursor = self.connection.cursor()
         if sex == 'Ж':
             sex = (31, 'Ж')
         else:
             sex = (35, 'М')
         cursor.execute('''INSERT INTO users 
-                          (email, user_name, password_hash, sex, weight, water) 
-                          VALUES (?,?,?,?,?,?)''',
-                       (email, user_name, password_hash, sex[1], weight, int(weight) * sex[0]))
+                          (email, user_name, password, sex, weight, water, status) 
+                          VALUES (?,?,?,?,?,?,?)''',
+                       (email, user_name, password_hash, sex[1], weight, int(weight) * sex[0], status))
         cursor.close()
         self.connection.commit()
 
@@ -61,7 +62,7 @@ class DataBaseUser(DataBase):
 
     def exists(self, email, password_hash):
         cursor = self.connection.cursor()
-        cursor.execute("SELECT * FROM users WHERE email = ? AND password_hash = ?",
+        cursor.execute("SELECT * FROM users WHERE email = ? AND password = ?",
                        (email, password_hash))
         row = cursor.fetchone()
         return (True, row[0]) if row else (False,)

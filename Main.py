@@ -21,6 +21,10 @@ def main():
 
 @app.route('/')
 def home():
+    # print(session.get('status', 0))
+    if int(session.get('status', GUEST)) & READ:
+        print(1)
+
     return render_template('home.html')
 
 
@@ -37,7 +41,6 @@ def registration():
             return render_template('r_1.html', title='Регистрация',
                                    form=form,
                                    message="Пароли не совпадают")
-        # session = db_session.create_session()
         vse = user.get_all()
         for i in vse:
             if i == form.email.data:
@@ -45,15 +48,8 @@ def registration():
                                        form=form,
                                        message="Такой пользователь уже есть")
 
-        user.insert(form.email.data, form.name.data, form.password.data, form.sex.data, form.weight.data)
-        # session.commit()
+        user.insert(form.email.data, form.name.data, form.password.data, form.sex.data, form.weight.data, USER)
         return redirect('/home')
-
-    #
-    #    user.set_password(form.password.data)
-    #     session.add(user)
-    #     session.commit()
-    #     return redirect('/water')
 
     return render_template('r_1.html', title='Регистрация', form=form)
 
@@ -67,6 +63,7 @@ def login():
         exists = user.exists(email, password)
         if exists[0]:
             session['email'] = email
+            session['status'] = user.get(exists[1])[STATUS]
             session['user_id'] = exists[1]
             return redirect('/home')
     return render_template('login.html', title='Авторизация', form=form)
@@ -79,17 +76,23 @@ def some_note():
 
 @app.route('/waterbalance', methods=['GET', 'POST'])
 def waterbalance():
-    return render_template('waterbalance.html')
+    if int(session.get('status', GUEST)) & READ:
+        return render_template('waterbalance.html')
+    return render_template('home.html')
 
 
 @app.route('/places')
 def places():
-    return render_template('places.html')
+    if int(session.get('status', GUEST)) & READ:
+        return render_template('places.html')
+    return render_template('home.html')
 
 
 @app.route('/weather')
 def weather():
-    return render_template('weather.html')
+    if int(session.get('status', GUEST)) & READ:
+        return render_template('weather.html')
+    return render_template('home.html')
 
 
 if __name__ == '__main__':
