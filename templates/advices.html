@@ -1,11 +1,12 @@
 {% extends "waterbalance.html" %}
 
 {% block content %}
+<br>
+<center><div class="content_1"><h1>Advices</h1></div></div></center>
 {% if "user_name" in session %}
-<a class="navbar-brand" href="/logout">Выход</a>{{session["user_name"]}}&nbsp;&nbsp;
-<a href="/add_advice">Добавить рецепт</a>
-{% else %}
-<a class="navbar-brand" href="/login">Вход</a>
+    {% if write %}
+    <a class="btn btn-success" href="/add_advice">Добавить совет</a>
+    {% endif %}
 {% endif %}
 <div class="row">
     <br><br><br>
@@ -15,35 +16,30 @@
 <div class="row">
     <div class="col-md-4">
         <br>
-        <b>Название:&nbsp;</b>
-        {{item[1]}}<br>
-        <b>Рецепт:&nbsp;</b>
-        {{item[2]}}<br>
-        <b>Ингридиенты:&nbsp;</b>
-        {{item[3]}}<br>
-        <b>Сложность:&nbsp;</b>
-        {{item[4]}}<br>
-        {% if write %}
-        <a href="/delete_recipe/{{item[0]}}">Удалить рецепт</a>
+        <div class="card text-white bg-primary mb-3" style="max-width: 18rem;">
+          <div class="card-header">Совет</div>
+          <div class="card-body">
+            <h5 class="card-title">{{item[1]}}</h5>
+            <p class="card-text">{{item[2]}}
+            <img width="200" height="100" class="img-thumbnail img-fluid" src="{{item[3]}}" alt=""></p>
+          </div>
+        </div>
+        {% if execute %}
+            <a class="btn btn-danger" href="/delete_advice/{{item[0]}}">Удалить совет</a>
         {% endif %}
     </div>
     <div class="col-md-4">
-        <img width="2000" height="800" class="img-thumbnail img-fluid" src="{{item[5]}}" alt="">
+        <img width="3000" height="1500" class="img-thumbnail img-fluid" src="{{item[3]}}" alt="">
     </div>
     <div class="col-md-1">
     </div>
-    <div class="col-md-2">
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <h3 class="panel-title">Реклама</h3>
+            <div class="card" style="width: 18rem; align: right;">
+              <img class="card-img-top" src="/static/img/a.png" alt="Здесь могла быть ваша реклама.">
+              <div class="card-body">
+                <p class="card-text">Здесь могла быть ваша реклама.</p>
+              </div>
             </div>
-            <div class="panel-body">
-                Здесь могла быть ваша реклама!
-            </div>
-        </div>
-    </div>
 </div>
-
 <div class="row">
     <br><br><br>
 </div>
