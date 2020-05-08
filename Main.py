@@ -87,7 +87,7 @@ def some_note():
 @app.route('/waterbalance', methods=['GET', 'POST'])
 def waterbalance():
     if int(session.get('status', GUEST)) & READ:
-        return render_template('waterbalance.html')
+        return render_template('water.html')
     return render_template('home.html')
 
 
@@ -123,15 +123,12 @@ def add_advice():
             return redirect('/login')
         title = request.form['name']
         content = request.form['advice']
-        if title != '' and content != '':
-            if request.files.get('file', None):
-                photo = 'static/images/' + request.files['file'].filename
-                request.files['file'].save(photo)
-            else:
-                return render_template('not_enough.html')
+        if title and content and request.files.get('file', None):
+            photo = 'static/images/' + request.files['file'].filename
+            request.files['file'].save(photo)
             advices.insert(title, content, photo, session['user_id'])
             return redirect("/advices")
-        return render_template('not_enough.html')
+        return render_template('add_advice.html', message="Все поля должны быть заполнены")
 
 
 @app.route('/delete_advice/<int:news_id>', methods=['GET'])
