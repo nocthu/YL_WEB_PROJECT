@@ -127,8 +127,26 @@
     </header>
 <main role="main">
     {% block content %}
-    </br></br></br></br></br>
-    <center><div class="content_1"><h1>Добро пожаловать</h1></div></div></center>
+    </br></br>
+    {% if "user_name" in session %}
+        <a class="btn btn-dark" href="/logout">Выйти</a><br><br>
+            <div class="card text-white bg-secondary mb-3" style="max-width: 18rem;">
+                 <div class="card-header"><img class="card-img-top" src="/static/img/profile_pic.png" alt="Фото профиля." style="border-radius: 25%; width: 50px; height: 50px" align="bottom">
+                {{session["user_name"]}}</div>
+            </div>
+        <center><div class="content_1"><h1>Добро пожаловать, {{session["user_name"]}}</h1></div></div></center>
+    {% else %}
+        <div class="card text-white bg-secondary mb-3" style="max-width: 18rem;">
+             <div class="card-header">Войдите в свой аккаунт</div>
+        </div>
+    <a class="btn btn-warning" href="/login">Войти</a>
+    <a class="btn btn-warning" href="/registration">Зарегистрироваться</a>
+        <center><div class="content_1"><h1>Пожалуйста, войдите в свой аккаунт</h1></div></div>
+        <div class="content_1"><h1>или зарегистрируйтесь</h1></div></div></center>
+    {% endif %}
+<div class="row">
+    <br><br><br>
+</div>
     {% endblock %}
 </main>
 </body>
