@@ -18,15 +18,15 @@
         <br>
         <div class="card text-white bg-primary mb-3" style="max-width: 18rem;">
           <div class="card-header">Совет</div>
+            {% if execute %}
+                <a class="btn btn-danger" href="/delete_advice/{{item[0]}}">Удалить совет</a>
+            {% endif %}
           <div class="card-body">
             <h5 class="card-title">{{item[1]}}</h5>
             <p class="card-text">{{item[2]}}
             <img width="200" height="100" class="img-thumbnail img-fluid" src="{{item[3]}}" alt=""></p>
           </div>
         </div>
-        {% if execute %}
-            <a class="btn btn-danger" href="/delete_advice/{{item[0]}}">Удалить совет</a>
-        {% endif %}
     </div>
     <div class="col-md-4">
         <img width="3000" height="1500" class="img-thumbnail img-fluid" src="{{item[3]}}" alt="">

@@ -25,7 +25,7 @@ def main():
 def home():
     # print(session.get('status', 0))
     if int(session.get('status', GUEST)) & READ:
-        return render_template('home.html')
+        return render_template('b_1.html')
     return render_template('b_1.html')
 
 
