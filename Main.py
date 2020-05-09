@@ -1,6 +1,7 @@
 import os
 
 from flask import Flask, render_template, redirect, session, request
+import requests
 from flask_login import LoginManager, login_user
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, BooleanField, SubmitField, TextAreaField, RadioField
@@ -88,21 +89,56 @@ def some_note():
 def waterbalance():
     if int(session.get('status', GUEST)) & READ:
         return render_template('water.html')
-    return render_template('home.html')
+    return render_template('b_1.html')
 
 
 @app.route('/places')
 def places():
     if int(session.get('status', GUEST)) & READ:
         return render_template('places.html')
-    return render_template('home.html')
+    return render_template('b_1.html')
 
 
-@app.route('/weather')
+@app.route('/weather', methods=['GET', 'POST'])
 def weather():
-    if int(session.get('status', GUEST)) & READ:
-        return render_template('weather.html')
-    return render_template('home.html')
+    # if int(session.get('status', GUEST)) & READ:
+    #     city = 'Moscow'
+    #     if request.method == 'POST':
+    #         city = request.form.get('city')
+    #     if city is not None:
+    #         url = 'http://api.openweathermap.org/data/2.5/weather?q={}&units=metric&appid=eacbcd14d851ef4babf54d5073484017'
+    #         appid = 'eacbcd14d851ef4babf54d5073484017'
+    #         city_id = 0
+    #         r = requests.get(url.format(city)).json()
+    #         res = requests.get("http://api.openweathermap.org/data/2.5/weather",
+    #                            params={'id': city_id, 'units': 'metric', 'lang': 'ru', 'APPID': appid})
+    #         weather = {
+    #             'city': city,
+    #             'temperature': r['main']['temp'],
+    #             'description': r['weather'][0]['description'],
+    #             'icon': r['weather'][0]['icon']
+    #         }
+    #         return render_template('weather.html', weather=weather)
+    # return render_template('b_1.html')
+
+
+    city = None
+    if request.method == 'POST':
+        # city = request.form.get('city')
+        city = request.form['city']
+        print(city)
+    if request.method == 'GET':
+        url = 'http://api.openweathermap.org/data/2.5/weather?q={}&units=metric&lang=ru&appid=eacbcd14d851ef4babf54d5073484017'
+        r = requests.get(url.format(city)).json()
+        print(r)
+        weather = {
+            'city': 'Moscow',
+            'temperature': r['main']['temp'],
+            'description': r['weather'][0]['description'],
+            'icon': r['weather'][0]['icon']
+        }
+        print(weather)
+        return render_template('weather.html', weather=weather)
 
 
 @app.route('/advices')
