@@ -150,3 +150,10 @@ class Cities(DataBase):
         cursor.execute("SELECT * FROM cities")
         rows = cursor.fetchall()
         return rows
+
+    def delete(self, city_id):
+        cursor = self.connection.cursor()
+        cursor.execute('''DELETE FROM cities WHERE id = ?''', (str(city_id)))
+
+        cursor.close()
+        self.connection.commit()

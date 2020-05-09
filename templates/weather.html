@@ -5,16 +5,7 @@
     <center><div class="content_1"><h1>Weather</h1></div></center>
 <a class="btn btn-success" href="/add_city">Добавить город</a>
 
-<!--    <form method="POST">-->
-<!--            <input class="form-control" type="text" placeholder="Название города" name="city_name">-->
-<!--            <center><button type="submit" class="btn btn-primary">Получить прогноз погоды</button></center>-->
-<!--    </form>-->
-
-<!--    <form action="{{ url_for('weather') }}" method="post">-->
-<!--        <input class="form-control" type="text" name="projectFilepath" id="city" placeholder="Название города">-->
-<!--        <center><button type="submit" class="btn btn-primary">Получить прогноз погоды</button></center>-->
-<!--    </form>-->
-    {% for weather in weather_data %}
+    {% for weather in weather_data[::-1] %}
 
     <center>
         <div class="card bg-light mb-3" style="max-width: 18rem;">
@@ -22,6 +13,9 @@
               <figure class="image is-50x50">
                   <img src="http://openweathermap.org/img/w/{{ weather.icon }}.png" alt="WeatherImage">
               </figure>
+              <a type="button" class="close" data-dismiss="modal" aria-label="Close" href="/delete_city/{{weather.item_id}}">
+                  <span aria-hidden="true">&times;</span>
+              </a>
               {{ weather.city }}
           </div>
           <div class="card-body">
@@ -29,6 +23,7 @@
             <p class="card-text">{{ weather.description }}</p>
           </div>
         </div>
+
     </center>
 
     {% endfor %}

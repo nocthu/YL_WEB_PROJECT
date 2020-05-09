@@ -108,6 +108,7 @@ def weather():
         url = 'http://api.openweathermap.org/data/2.5/weather?q={}&units=metric&lang=ru&appid=eacbcd14d851ef4babf54d5073484017'
         r = requests.get(url.format(city)).json()
         weather = {
+            'item_id': item[0],
             'city': city,
             'temperature': r['main']['temp'],
             'description': r['weather'][0]['description'],
@@ -122,13 +123,20 @@ def add_city():
     if request.method == 'GET':
         return render_template('add_city.html')
     elif request.method == 'POST':
-        # city = request.form.get('city_name')
         city_name = request.form['city_name']
-        print(city_name)
         if city_name:
             cities.insert(city_name)
             return redirect('/weather')
         return render_template('add_city.html', message="Все поля должны быть заполнены")
+
+
+@app.route('/delete_city/<int:city_id>', methods=['GET'])
+def delete_city(city_id):
+    print(1)
+    if 'user_name' not in session:
+        return redirect('/login')
+    cities.delete(city_id)
+    return redirect("/weather")
 
 
 @app.route('/advices')
