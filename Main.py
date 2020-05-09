@@ -11,7 +11,7 @@ from data import db_session
 from data.users import User
 
 from Constants import *
-from DataBase import DataBaseUser, Advices
+from DataBase import DataBaseUser, Advices, Cities
 from Forms import RegisterForm, LoginForm, NewsForm
 
 app = Flask(__name__)
@@ -101,44 +101,34 @@ def places():
 
 @app.route('/weather', methods=['GET', 'POST'])
 def weather():
-    # if int(session.get('status', GUEST)) & READ:
-    #     city = 'Moscow'
-    #     if request.method == 'POST':
-    #         city = request.form.get('city')
-    #     if city is not None:
-    #         url = 'http://api.openweathermap.org/data/2.5/weather?q={}&units=metric&appid=eacbcd14d851ef4babf54d5073484017'
-    #         appid = 'eacbcd14d851ef4babf54d5073484017'
-    #         city_id = 0
-    #         r = requests.get(url.format(city)).json()
-    #         res = requests.get("http://api.openweathermap.org/data/2.5/weather",
-    #                            params={'id': city_id, 'units': 'metric', 'lang': 'ru', 'APPID': appid})
-    #         weather = {
-    #             'city': city,
-    #             'temperature': r['main']['temp'],
-    #             'description': r['weather'][0]['description'],
-    #             'icon': r['weather'][0]['icon']
-    #         }
-    #         return render_template('weather.html', weather=weather)
-    # return render_template('b_1.html')
-
-
-    city = None
-    if request.method == 'POST':
-        # city = request.form.get('city_name')
-        city = request.form['city_name']
-        print(city)
-    if request.method == 'GET':
+    all = cities.get_all()
+    weather_data = []
+    for item in all:
+        city = item[1]
         url = 'http://api.openweathermap.org/data/2.5/weather?q={}&units=metric&lang=ru&appid=eacbcd14d851ef4babf54d5073484017'
         r = requests.get(url.format(city)).json()
-        print(r)
         weather = {
             'city': city,
             'temperature': r['main']['temp'],
             'description': r['weather'][0]['description'],
             'icon': r['weather'][0]['icon']
         }
-        print(weather)
-        return render_template('weather.html', weather=weather)
+        weather_data.append(weather)
+    return render_template('weather.html', weather_data=weather_data)
+
+
+@app.route('/add_city', methods=['GET', 'POST'])
+def add_city():
+    if request.method == 'GET':
+        return render_template('add_city.html')
+    elif request.method == 'POST':
+        # city = request.form.get('city_name')
+        city_name = request.form['city_name']
+        print(city_name)
+        if city_name:
+            cities.insert(city_name)
+            return redirect('/weather')
+        return render_template('add_city.html', message="Все поля должны быть заполнены")
 
 
 @app.route('/advices')
@@ -184,5 +174,8 @@ if __name__ == '__main__':
 
     advices = Advices()
     advices.init_table()
+
+    cities = Cities()
+    cities.init_table()
 
     main()

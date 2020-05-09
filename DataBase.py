@@ -116,3 +116,37 @@ class Advices(DataBase):
         self.connection.commit()
 
 
+class Cities(DataBase):
+    def __init__(self):
+        super().__init__()
+        self.connection = self.get_connection()
+
+    def init_table(self):
+        cursor = self.connection.cursor()
+        cursor.execute('''CREATE TABLE IF NOT EXISTS cities 
+                            (id INTEGER PRIMARY KEY AUTOINCREMENT, 
+                             city_name VARCHAR(100),
+                             user_id INTEGER
+                             )''')
+        cursor.close()
+        self.connection.commit()
+
+    def insert(self, city_name):
+        cursor = self.connection.cursor()
+        cursor.execute('''INSERT INTO cities 
+                          (city_name) 
+                          VALUES (?)''', (city_name,))
+        cursor.close()
+        self.connection.commit()
+
+    def get(self, cities_id):
+        cursor = self.connection.cursor()
+        cursor.execute("SELECT * FROM cities WHERE id = ?", (str(cities_id)))
+        row = cursor.fetchone()
+        return row
+
+    def get_all(self):
+        cursor = self.connection.cursor()
+        cursor.execute("SELECT * FROM cities")
+        rows = cursor.fetchall()
+        return rows

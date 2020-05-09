@@ -3,25 +3,18 @@
 {% block content %}
     </br>
     <center><div class="content_1"><h1>Weather</h1></div></center>
-<!--    <div class="form-group row">-->
-<!--        <div class="col-sm-10">-->
-<!--            <input class="form-control" type="text" id="name" placeholder="Название города" name="name">-->
-<!--        </div>-->
-<!--        <div>-->
-<!--            <center><button type="submit" class="btn btn-primary">Получить прогноз погоды</button></center>-->
-<!--        </div>-->
-<!--    </div>-->
-    <section class="section">
-        <form method="POST">
-            <input class="form-control" type="text" placeholder="Название города" name="city_name">
-            <center><button type="submit" class="btn btn-primary">Получить прогноз погоды</button></center>
-        </form>
-    </section>
+<a class="btn btn-success" href="/add_city">Добавить город</a>
 
-    <form action="{{ url_for('weather') }}" method="post">
-        <input class="form-control" type="text" name="projectFilepath" id="city" placeholder="Название города">
-        <center><button type="submit" class="btn btn-primary">Получить прогноз погоды</button></center>
-    </form>
+<!--    <form method="POST">-->
+<!--            <input class="form-control" type="text" placeholder="Название города" name="city_name">-->
+<!--            <center><button type="submit" class="btn btn-primary">Получить прогноз погоды</button></center>-->
+<!--    </form>-->
+
+<!--    <form action="{{ url_for('weather') }}" method="post">-->
+<!--        <input class="form-control" type="text" name="projectFilepath" id="city" placeholder="Название города">-->
+<!--        <center><button type="submit" class="btn btn-primary">Получить прогноз погоды</button></center>-->
+<!--    </form>-->
+    {% for weather in weather_data %}
 
     <center>
         <div class="card bg-light mb-3" style="max-width: 18rem;">
@@ -38,4 +31,5 @@
         </div>
     </center>
 
+    {% endfor %}
 {% endblock %}
