@@ -13,7 +13,7 @@
 <!--    </div>-->
     <section class="section">
         <form method="POST">
-            <input class="form-control" type="text" id="city" placeholder="Название города" name="city">
+            <input class="form-control" type="text" placeholder="Название города" name="city_name">
             <center><button type="submit" class="btn btn-primary">Получить прогноз погоды</button></center>
         </form>
     </section>
@@ -23,49 +23,19 @@
         <center><button type="submit" class="btn btn-primary">Получить прогноз погоды</button></center>
     </form>
 
-<!--    <center>-->
-<!--        <div class="card bg-light mb-3" style="max-width: 18rem;">-->
-<!--          <div class="card-header">-->
-<!--              <figure class="image is-50x50">-->
-<!--                  <img src="http://openweathermap.org/img/w/{{ weather.icon }}.png" alt="WeatherImage">-->
-<!--              </figure>-->
-<!--              {{ weather.city }}-->
-<!--          </div>-->
-<!--          <div class="card-body">-->
-<!--            <h5 class="card-title">{{ weather.temperature }}° C</h5>-->
-<!--            <p class="card-text">{{ weather.description }}</p>-->
-<!--          </div>-->
-<!--        </div>-->
-<!--    </center>-->
-
-<section class="section">
-        <div class="container">
-            <div class="columns">
-                <div class="column is-offset-4 is-4">
-                    {% for weather in weather_data %}
-                    <div class="box">
-                        <article class="media">
-                            <div class="media-left">
-                                <figure class="image is-50x50">
-                                    <img src="http://openweathermap.org/img/w/{{ weather.icon }}.png" alt="Image">
-                                </figure>
-                            </div>
-                            <div class="media-content">
-                                <div class="content">
-                                    <p>
-                                        <span class="title">{{ weather.city }}</span>
-                                        <br>
-                                        <span class="subtitle">{{ weather.temperature }}° F</span>
-                                        <br> {{ weather.description }}
-                                    </p>
-                                </div>
-                            </div>
-                        </article>
-                    </div>
-                    {% endfor %}
-                </div>
-            </div>
+    <center>
+        <div class="card bg-light mb-3" style="max-width: 18rem;">
+          <div class="card-header">
+              <figure class="image is-50x50">
+                  <img src="http://openweathermap.org/img/w/{{ weather.icon }}.png" alt="WeatherImage">
+              </figure>
+              {{ weather.city }}
+          </div>
+          <div class="card-body">
+            <h5 class="card-title">{{ weather.temperature }}° C</h5>
+            <p class="card-text">{{ weather.description }}</p>
+          </div>
         </div>
-</section>
+    </center>
 
 {% endblock %}

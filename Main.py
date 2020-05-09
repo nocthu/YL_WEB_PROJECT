@@ -124,15 +124,15 @@ def weather():
 
     city = None
     if request.method == 'POST':
-        # city = request.form.get('city')
-        city = request.form['city']
+        # city = request.form.get('city_name')
+        city = request.form['city_name']
         print(city)
     if request.method == 'GET':
         url = 'http://api.openweathermap.org/data/2.5/weather?q={}&units=metric&lang=ru&appid=eacbcd14d851ef4babf54d5073484017'
         r = requests.get(url.format(city)).json()
         print(r)
         weather = {
-            'city': 'Moscow',
+            'city': city,
             'temperature': r['main']['temp'],
             'description': r['weather'][0]['description'],
             'icon': r['weather'][0]['icon']
