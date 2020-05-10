@@ -4,7 +4,6 @@ import datetime
 
 from flask import Flask, render_template, redirect, session, request
 
-
 from Constants import *
 from DataBase import DataBaseUser, Advices, Cities
 from Forms import RegisterForm, LoginForm, NewsForm
@@ -19,6 +18,7 @@ def main():
 
 @app.route('/')
 def home():
+    # print(session.get('status', 0))
     if int(session.get('status', GUEST)) & READ:
         return render_template('b_1.html')
     return render_template('b_1.html')

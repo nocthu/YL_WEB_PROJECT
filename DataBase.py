@@ -97,9 +97,6 @@ class Advices(DataBase):
 
     def insert(self, name, content, photo, user_id):
         cursor = self.connection.cursor()
-        # date = int(str(datetime.date.today()).split('-')[0]) * 364 + int(
-        #     str(datetime.date.today()).split('-')[1]) * 30 + int(
-        #     str(datetime.date.today()).split('-')[2])
         cursor.execute('''INSERT INTO advices 
                           (name, content, photo, user_id) 
                           VALUES (?,?,?,?)''', (name, content, photo, str(user_id)))
