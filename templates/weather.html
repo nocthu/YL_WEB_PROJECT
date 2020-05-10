@@ -2,5 +2,29 @@
 
 {% block content %}
     </br>
-    <center><div class="content_1"><h1>Weather</h1></div></div></center>
+    <center><div class="content_1"><h1>Weather</h1></div></center>
+<a class="btn btn-success" href="/add_city">Добавить город</a>
+
+    {% for weather in weather_data[::-1] %}
+
+    <center>
+        <div class="card bg-light mb-3" style="max-width: 18rem;">
+          <div class="card-header">
+              <figure class="image is-50x50">
+                  <img src="http://openweathermap.org/img/w/{{ weather.icon }}.png" alt="WeatherImage">
+              </figure>
+              <a type="button" class="close" data-dismiss="modal" aria-label="Close" href="/delete_city/{{weather.item_id}}">
+                  <span aria-hidden="true">&times;</span>
+              </a>
+              {{ weather.city }}
+          </div>
+          <div class="card-body">
+            <h5 class="card-title">{{ weather.temperature }}° C</h5>
+            <p class="card-text">{{ weather.description }}</p>
+          </div>
+        </div>
+
+    </center>
+
+    {% endfor %}
 {% endblock %}

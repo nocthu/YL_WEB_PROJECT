@@ -1,0 +1,13 @@
+{% extends "b_1.html" %}
+
+{% block content %}
+    </br>
+    <center><div class="content_1"><h1>Weather</h1></div></center>
+
+    <form method="POST">
+            <input class="form-control" type="text" placeholder="Название города" name="city_name">
+            <center><button type="submit" class="btn btn-primary">Получить прогноз погоды</button></center>
+    </form>
+
+{{ message }}
+{% endblock %}

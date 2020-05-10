@@ -10,7 +10,7 @@ from data import db_session
 from data.users import User
 
 from Constants import *
-from DataBase import DataBaseUser, Advices
+from DataBase import DataBaseUser, Advices, Cities
 from Forms import RegisterForm, LoginForm, NewsForm
 
 app = Flask(__name__)
@@ -25,7 +25,7 @@ def main():
 def home():
     # print(session.get('status', 0))
     if int(session.get('status', GUEST)) & READ:
-        return render_template('home.html')
+        return render_template('b_1.html')
     return render_template('b_1.html')
 
 
@@ -86,26 +86,56 @@ def some_note():
 
 @app.route('/waterbalance', methods=['GET', 'POST'])
 def waterbalance():
-    if request.method == 'GET':
-        if int(session.get('status', GUEST)) & READ:
-            return render_template('water.html')
-        return render_template('home.html')
-    elif request.method == 'POST':
-        pass
+    if int(session.get('status', GUEST)) & READ:
+        return render_template('water.html')
+    return render_template('home.html')
 
 
 @app.route('/places')
 def places():
     if int(session.get('status', GUEST)) & READ:
         return render_template('places.html')
-    return render_template('home.html')
+    return render_template('b_1.html')
 
 
-@app.route('/weather')
+@app.route('/weather', methods=['GET', 'POST'])
 def weather():
-    if int(session.get('status', GUEST)) & READ:
-        return render_template('weather.html')
-    return render_template('home.html')
+    all = cities.get_all()
+    weather_data = []
+    for item in all:
+        city = item[1]
+        url = 'http://api.openweathermap.org/data/2.5/weather?q={}&units=metric&lang=ru&appid=eacbcd14d851ef4babf54d5073484017'
+        r = requests.get(url.format(city)).json()
+        weather = {
+            'item_id': item[0],
+            'city': city,
+            'temperature': r['main']['temp'],
+            'description': r['weather'][0]['description'],
+            'icon': r['weather'][0]['icon']
+        }
+        weather_data.append(weather)
+    return render_template('weather.html', weather_data=weather_data)
+
+
+@app.route('/add_city', methods=['GET', 'POST'])
+def add_city():
+    if request.method == 'GET':
+        return render_template('add_city.html')
+    elif request.method == 'POST':
+        city_name = request.form['city_name']
+        if city_name:
+            cities.insert(city_name)
+            return redirect('/weather')
+        return render_template('add_city.html', message="Все поля должны быть заполнены")
+
+
+@app.route('/delete_city/<int:city_id>', methods=['GET'])
+def delete_city(city_id):
+    print(1)
+    if 'user_name' not in session:
+        return redirect('/login')
+    cities.delete(city_id)
+    return redirect("/weather")
 
 
 @app.route('/advices')
@@ -151,5 +181,8 @@ if __name__ == '__main__':
 
     advices = Advices()
     advices.init_table()
+
+    cities = Cities()
+    cities.init_table()
 
     main()
