@@ -120,7 +120,7 @@ class Advices(DataBase):
 
     def delete(self, advices_id):
         cursor = self.connection.cursor()
-        cursor.execute('''DELETE FROM advices WHERE id = ?''', (str(advices_id)))
+        cursor.execute('''DELETE FROM advices WHERE id = ?''', (str(advices_id),))
 
         cursor.close()
         self.connection.commit()
@@ -163,7 +163,8 @@ class Cities(DataBase):
 
     def delete(self, city_id):
         cursor = self.connection.cursor()
-        cursor.execute('''DELETE FROM cities WHERE id = ?''', (str(city_id)))
+        print(city_id)
+        cursor.execute('''DELETE FROM cities WHERE id = ?''', (str(city_id),))
 
         cursor.close()
         self.connection.commit()

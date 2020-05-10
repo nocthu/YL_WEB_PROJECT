@@ -161,6 +161,7 @@ def delete_city(city_id):
     print(1)
     if 'user_name' not in session:
         return redirect('/login')
+    print(city_id)
     cities.delete(city_id)
     return redirect("/weather")
 
