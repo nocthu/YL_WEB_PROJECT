@@ -100,20 +100,37 @@ def waterbalance():
             return render_template('water.html', percent=(str(percent)+'%'))
         return render_template('b_1.html')
     elif request.method == 'POST':
+        if request.form['size'].isalpha():
+            return render_template('water.html', message="Введите натуральное число")
+
         size = int(request.form['size'])
         drink = request.form['drink']
         percent = int(user.get(session['user_id'])[PERCENT])
         water = int(user.get(session['user_id'])[WATER])
+
         if drink == 'Напиток...':
             return render_template('water.html', message="Выберете напиток")
-        # print(water, percent, size)
-        # print((100 - percent) / 100)
-        # print((water * ((100 - percent) / 100) - size) * 100)
-        # print(((water * ((100 - percent) / 100) - size) * 100) // water)
+        elif drink in {"Вода", "Миниральная вода"}:
+            # new_percent = 100 - round(((water * ((100 - percent) / 100) - size) * 100) / water)
+            pass
+        elif drink in {'Сок', 'Молоко'}:
+            pass
+        elif drink == "Чай":
+            size *= -0.3
+        elif drink == 'Сладкая газированная вода':
+            pass
+        elif drink == "Кофе":
+            size *= -1.5
+        elif drink == "Алкоголь":
+            pass
+
         new_percent = 100 - round(((water * ((100 - percent) / 100) - size) * 100) / water)
-        print(new_percent)
+
         if new_percent > 100:
             new_percent = 100
+        elif new_percent < 0:
+            new_percent = 0
+
         user.update_percent(session['user_id'], str(new_percent))
         return redirect('/waterbalance')
 
