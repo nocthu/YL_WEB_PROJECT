@@ -158,10 +158,8 @@ def add_city():
 
 @app.route('/delete_city/<int:city_id>', methods=['GET'])
 def delete_city(city_id):
-    print(1)
     if 'user_name' not in session:
         return redirect('/login')
-    print(city_id)
     cities.delete(city_id)
     return redirect("/weather")
 

@@ -163,7 +163,6 @@ class Cities(DataBase):
 
     def delete(self, city_id):
         cursor = self.connection.cursor()
-        print(city_id)
         cursor.execute('''DELETE FROM cities WHERE id = ?''', (str(city_id),))
 
         cursor.close()
