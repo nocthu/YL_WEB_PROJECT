@@ -30,7 +30,9 @@ class DataBaseUser(DataBase):
                              sex VARCHAR(50),
                              weight VARCHAR(50),
                              water VARCHAR(50),
-                             status VARCHAR(50)
+                             status VARCHAR(50),
+                             date VARCHAR(50),
+                             percent VARCHAR(50)
                              )''')
         cursor.close()
         self.connection.commit()

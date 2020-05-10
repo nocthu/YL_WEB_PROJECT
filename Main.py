@@ -87,9 +87,16 @@ def some_note():
 
 @app.route('/waterbalance', methods=['GET', 'POST'])
 def waterbalance():
-    if int(session.get('status', GUEST)) & READ:
-        return render_template('water.html')
-    return render_template('home.html')
+    if request.method == 'GET':
+        if int(session.get('status', GUEST)) & READ:
+            water = user.get(session['user_id'])[WATER]
+            percent = 50
+            return render_template('water.html', percent=(str(percent)+'%'))
+        return render_template('home.html')
+    if request.method == 'POST':
+        size = request.form['size']
+        water = user.get(session['user_id'])[WATER]
+
 
 
 @app.route('/places')

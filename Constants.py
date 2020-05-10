@@ -11,6 +11,7 @@ ADMIN = READ | WRITE | EXECUTE
 STATUS = 7
 USERNAME = 1
 FILE = 3
+WATER = 5
 
 if __name__ == '__main__':
     # print(USER & READ, USER & WRITE, USER & EXECUTE)
