@@ -11,10 +11,13 @@
       <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar"
         aria-valuenow="75" aria-valuemin="0+-+-" aria-valuemax="100" style="width: {{percent}}"></div>
     </div>
+    <center>
     <form>
-        <div class="form-row align-items-center">
+        <div class="card text-white bg-secondary mb-3" style="max-width: 36rem;">
+          <div class="card-header bg-transparent text-white bg-secondary">
+              <div class="form-row align-items-center">
             <div class="col-auto my-1">
-                <label class="mr-sm-2" for="inlineFormCustomSelect">Укажите напиток</label>
+                <h5 class="mr-sm-2" for="inlineFormCustomSelect">Укажите напиток</h5>
                 <select class="custom-select mr-sm-2" id="inlineFormCustomSelect" name="drink">
                     <option selected>Напиток...</option>
                     <option value="1">Вода</option>
@@ -28,7 +31,10 @@
                 </select>
             </div>
         </div>
-        <div class="slider-wrapper">
+          </div>
+          <div class="card-body text-white bg-secondary">
+            <h5 class="card-title">Укажите объем</h5>
+            <div class="slider-wrapper" >
             <input type="range" min="50" max="500" step="50" value="50" list="list" name="size">
             <datalist id="list">
                 <option value="50" label="50 мл">
@@ -42,9 +48,14 @@
                 <option value="450">
                 <option value="500" label="500 мл">
             </datalist>
+            </div>
+          </div>
+          <div class="card-footer btext-white bg-secondary">
+              <button type="submit" class="btn btn-primary btn-lg btn-block">Добавить</button>
+          </div>
         </div>
-        <button type="submit" class="btn btn-primary">>Добавить</button>
     </form>
+    </center>
     {{message}}
 </form>
 </body>
