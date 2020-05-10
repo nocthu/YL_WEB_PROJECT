@@ -3,12 +3,15 @@ import requests
 import datetime
 
 from flask import Flask, render_template, redirect, session, request
-
+from flask_ngrok import run_with_ngrok
 from Constants import *
 from DataBase import DataBaseUser, Advices, Cities
 from Forms import RegisterForm, LoginForm, NewsForm
 
+from socket import gethostname
+
 app = Flask(__name__)
+run_with_ngrok(app)
 app.config['SECRET_KEY'] = 'yandexlyceum_secret_key'
 
 
@@ -213,5 +216,5 @@ if __name__ == '__main__':
 
     cities = Cities()
     cities.init_table()
-
-    main()
+    if 'liveconsole' not in gethostname():
+        main()
