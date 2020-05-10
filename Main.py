@@ -1,5 +1,6 @@
 import os
 import requests
+import datetime
 
 from flask import Flask, render_template, redirect, session, request
 from flask_login import LoginManager, login_user
@@ -89,14 +90,32 @@ def some_note():
 def waterbalance():
     if request.method == 'GET':
         if int(session.get('status', GUEST)) & READ:
-            water = user.get(session['user_id'])[WATER]
-            percent = 50
+            date = user.get(session['user_id'])[DATE]
+            # print(date, datetime.date.today(), str(date) != str(datetime.date.today()))
+            if str(date) != str(datetime.date.today()):
+                percent = 0
+                user.update_percent(session['user_id'], '0')
+            else:
+                percent = user.get(session['user_id'])[PERCENT]
             return render_template('water.html', percent=(str(percent)+'%'))
-        return render_template('home.html')
-    if request.method == 'POST':
-        size = request.form['size']
-        water = user.get(session['user_id'])[WATER]
-
+        return render_template('b_1.html')
+    elif request.method == 'POST':
+        size = int(request.form['size'])
+        drink = request.form['drink']
+        percent = int(user.get(session['user_id'])[PERCENT])
+        water = int(user.get(session['user_id'])[WATER])
+        if drink == 'Напиток...':
+            return render_template('water.html', message="Выберете напиток")
+        # print(water, percent, size)
+        # print((100 - percent) / 100)
+        # print((water * ((100 - percent) / 100) - size) * 100)
+        # print(((water * ((100 - percent) / 100) - size) * 100) // water)
+        new_percent = 100 - round(((water * ((100 - percent) / 100) - size) * 100) / water)
+        print(new_percent)
+        if new_percent > 100:
+            new_percent = 100
+        user.update_percent(session['user_id'], str(new_percent))
+        return redirect('/waterbalance')
 
 
 @app.route('/places')

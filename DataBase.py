@@ -44,9 +44,10 @@ class DataBaseUser(DataBase):
         else:
             sex = (35, 'М')
         cursor.execute('''INSERT INTO users 
-                          (email, user_name, password, sex, weight, water, status) 
-                          VALUES (?,?,?,?,?,?,?)''',
-                       (email, user_name, password_hash, sex[1], weight, int(weight) * sex[0], status))
+                          (email, user_name, password, sex, weight, water, status, date, percent) 
+                          VALUES (?,?,?,?,?,?,?,?,?)''',
+                       (email, user_name, password_hash, sex[1], weight, int(weight) * sex[0], status,
+                        datetime.date.today(), 0))
         cursor.close()
         self.connection.commit()
 
@@ -55,6 +56,13 @@ class DataBaseUser(DataBase):
         cursor.execute("SELECT * FROM users WHERE id = ?", (str(user_id)))
         row = cursor.fetchone()
         return row
+
+    def update_percent(self, user_id, value):
+        cursor = self.connection.cursor()
+        cursor.execute("""UPDATE users
+                        SET percent = ?
+                        WHERE id = ?""", (value, str(user_id)))
+        self.connection.commit()
 
     def get_all(self):
         cursor = self.connection.cursor()

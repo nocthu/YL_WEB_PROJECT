@@ -5,6 +5,7 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/water.css') }}">
 </head>
 <body>
+<form method="post" enctype="multipart/form-data">
     <center><div class="content_1"><h1>Waterbalance</h1></div></center>
     <div class="progress">
       <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar"
@@ -14,7 +15,7 @@
         <div class="form-row align-items-center">
             <div class="col-auto my-1">
                 <label class="mr-sm-2" for="inlineFormCustomSelect">Укажите напиток</label>
-                <select class="custom-select mr-sm-2" id="inlineFormCustomSelect">
+                <select class="custom-select mr-sm-2" id="inlineFormCustomSelect" name="drink">
                     <option selected>Напиток...</option>
                     <option value="1">Вода</option>
                     <option value="2">Минеральная вода</option>
@@ -42,7 +43,9 @@
                 <option value="500" label="500 мл">
             </datalist>
         </div>
-        <button type="button" class="btn btn-primary btn-lg">Добавить</button>
+        <button type="submit" class="btn btn-primary">>Добавить</button>
     </form>
+    {{message}}
+</form>
 </body>
 {% endblock %}
