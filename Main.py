@@ -134,14 +134,6 @@ def waterbalance():
         user.update_percent(session['user_id'], str(new_percent))
         return redirect('/waterbalance')
 
-
-@app.route('/places')
-def places():
-    if int(session.get('status', GUEST)) & READ:
-        return render_template('places.html')
-    return render_template('b_1.html')
-
-
 @app.route('/weather', methods=['GET', 'POST'])
 def weather():
     all = cities.get_all()
