@@ -3,13 +3,7 @@ import requests
 import datetime
 
 from flask import Flask, render_template, redirect, session, request
-from flask_login import LoginManager, login_user
-from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, BooleanField, SubmitField, TextAreaField, RadioField
-from wtforms.validators import DataRequired
-from wtforms.fields.html5 import EmailField
-from data import db_session
-from data.users import User
+
 
 from Constants import *
 from DataBase import DataBaseUser, Advices, Cities
@@ -25,7 +19,6 @@ def main():
 
 @app.route('/')
 def home():
-    # print(session.get('status', 0))
     if int(session.get('status', GUEST)) & READ:
         return render_template('b_1.html')
     return render_template('b_1.html')
@@ -110,7 +103,7 @@ def waterbalance():
 
         if drink == 'Напиток...':
             return render_template('water.html', message="Выберете напиток")
-        elif drink in {"Вода", "Миниральная вода"}:
+        elif drink in {"Вода", "Минеральная вода"}:
             # new_percent = 100 - round(((water * ((100 - percent) / 100) - size) * 100) / water)
             pass
         elif drink in {'Сок', 'Молоко'}:
@@ -133,6 +126,7 @@ def waterbalance():
 
         user.update_percent(session['user_id'], str(new_percent))
         return redirect('/waterbalance')
+
 
 @app.route('/weather', methods=['GET', 'POST'])
 def weather():
