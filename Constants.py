@@ -15,6 +15,7 @@ DATE = 8
 PERCENT = 9
 USER_FILE = 10
 DAYS_HERE = 11
+POSTS = 12
 
 # for class DataBaseAdvices
 FILE = 3

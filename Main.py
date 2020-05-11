@@ -82,6 +82,13 @@ def login():
             session['user_name'] = user.get(exists[1])[USERNAME]
             session['status'] = user.get(exists[1])[STATUS]
             session['user_id'] = exists[1]
+            date = user.get(session['user_id'])[DATE]
+            if datetime.date.today() != date:
+                user.update(session['user_id'], 'percent', '0')
+                user.update(session['user_id'], 'date', str(datetime.date.today()))
+                user.update(session['user_id'], 'days_here', str(int(user.get(exists[1])[DAYS_HERE]) + 1))
+                if int(user.get(exists[1])[DAYS_HERE]) > 30:
+                    user.update(session['user_id'], 'status', MODERATOR)
             return redirect('/home')
     return render_template('login.html', title='Авторизация', form=form)
 
@@ -212,12 +219,15 @@ def add_advice():
     elif request.method == 'POST':
         if 'user_name' not in session:
             return redirect('/login')
+        if user.get(session['user_id'])[POSTS] >= 3 and user.get(session['user_id'])[STATUS] == MODERATOR:
+            return render_template('add_advice.html', message="У вас не хватает прав для добавления ещё одного совета")
         title = request.form['name']
         content = request.form['advice']
         if title and content and request.files.get('file', None):
             photo = 'static/images/' + request.files['file'].filename
             request.files['file'].save(photo)
             advices.insert(title, content, photo, session['user_id'])
+            user.update(session['user_id'], 'posts', str(int(user.get(session['user_id'])[POSTS]) + 1))
             return redirect("/advices")
         return render_template('add_advice.html', message="Все поля должны быть заполнены")
 

@@ -34,7 +34,8 @@ class DataBaseUser(DataBase):
                              date VARCHAR(50),
                              percent VARCHAR(50),
                              user_file VARCHAR(100),
-                             days_here VARCHAR(50)
+                             days_here VARCHAR(50),
+                             posts VARCHAR(50)
                              )''')
         cursor.close()
         self.connection.commit()
@@ -46,10 +47,11 @@ class DataBaseUser(DataBase):
         else:
             sex = (35, 'М')
         cursor.execute('''INSERT INTO users 
-                          (email, user_name, password, sex, weight, water, status, date, percent, user_file, days_here) 
-                          VALUES (?,?,?,?,?,?,?,?,?,?,?)''',
+                          (email, user_name, password, sex, weight, water, status, date, percent, user_file, days_here,
+                          posts) 
+                          VALUES (?,?,?,?,?,?,?,?,?,?,?,?)''',
                        (email, user_name, password_hash, sex[1], weight, int(weight) * sex[0], status,
-                        datetime.date.today(), 0, '/static/img/profile_pic.png', 1))
+                        datetime.date.today(), '0', '/static/img/profile_pic.png', '0', '0'))
         cursor.close()
         self.connection.commit()
 
