@@ -6,13 +6,39 @@
 </head>
 <body>
 <form method="post" enctype="multipart/form-data">
-    <nav class="dws-menu">
-        <ul>
-            <li>><span style="font-size:26px">{{email}}</span></li>
-            <li><a href="/delete" class="fa">Удалить аккаунт</a></li>
-        </ul>
-    </nav>
-
+    <div class="card text-white bg-secondary mb-3" style="max-width: 18rem;">
+                 <div class="card-header">
+                     <img class="card-img-top" src={{pic}} alt="Фото профиля." style="border-radius: 25%; width: 50px; height: 50px" align="bottom">
+                     <a class="btn btn-warning" href="/profile">{{session["user_name"]}}</a>
+                 </div>
+    </div>
+    <a class="btn btn-danger" href="/delete">Удалить аккаунт</a>
+    <br>
+    <h5>Ваше имя</h5>
+    <div class="form-group row">
+        <div class="col-sm-10">
+            <input class="form-control" type="text" id="name" placeholder={{session["user_name"]}} name="name">
+        </div>
+    </div>
+    <br>
+    <h5>Ваш статус</h5>
+    <div class="form-group row">
+        <div class="col-sm-10">
+            <input class="form-control" type="text" placeholder={{session["status"]}} readonly>
+        </div>
+    </div>
+    <br>
+    <h5>Ваше фото</h5>
+    <img class="card-img-top" src={{photo}} alt="Фото профиля." style="border-radius: 25%; width: 200px; height: 200px" align="bottom">
+    <div>
+        <div class="form-group">
+            <h6 for="photo">Добавить новую фотографию</h6>
+            <input type="file" class="form-control-file" id="photo" name="file">
+        </div>
+    </div>
+    <div>
+        <center><button type="submit" class="btn btn-success btn-lg btn-block">Сохранить изменения</button></center>
+    </div>
 </form>
 </body>
 {% endblock %}
