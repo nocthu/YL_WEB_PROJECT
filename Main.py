@@ -119,7 +119,6 @@ def waterbalance():
             size *= 0.2
         elif drink in {'Сок', 'Молоко', 'Какао', 'Морс', 'Компот', 'Кефир', 'Йогурт'}:
             size = 0
-            print(1)
         elif drink in {'Айран'}:
             size *= -0.2
         elif drink in {'Молочный коктейль', 'Спортивный коктейль'}:
@@ -226,5 +225,6 @@ if __name__ == '__main__':
 
     cities = Cities()
     cities.init_table()
+
     if 'liveconsole' not in gethostname():
         main()
