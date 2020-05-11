@@ -20,16 +20,33 @@ def main():
 
 
 @app.route('/')
-def home():
-    # print(session.get('status', 0))
-    if int(session.get('status', GUEST)) & READ:
-        return render_template('b_1.html')
-    return render_template('b_1.html')
-
-
 @app.route('/home', methods=['GET', 'POST'])
 def choose():
+    if int(session.get('status', GUEST)) & READ:
+        return render_template('b_1.html', pic=str(user.get(session['user_id'])[USER_FILE]))
     return render_template('b_1.html')
+
+
+@app.route('/profile', methods=['GET', 'POST'])
+def profile():
+    if int(session.get('status', GUEST)) & READ:
+        if request.method == 'GET':
+            return render_template('profile.html', email=session['email'], user_name=session['user_name'],
+                                   status=session['status'], photo=1)
+        elif request.method == 'POST':
+            new_user_name = request.form['user_name']
+            if new_user_name != session['user_name']:
+                user.update(session['user_id'], 'user_name', new_user_name)
+                session['user_name'] = new_user_name
+            if request.files.get('file', None):
+                photo = 'static/user_files/' + request.files['file'].filename
+                request.files['file'].save(photo)
+                all = user.get(session['user_id'])
+                os.remove(all[USER_FILE])
+                user.update(session['user_id'], 'user_file', photo)
+            return redirect("/profile")
+
+    return redirect('/login')
 
 
 @app.route('/registration', methods=['GET', 'POST'])
@@ -65,6 +82,13 @@ def login():
             session['user_name'] = user.get(exists[1])[USERNAME]
             session['status'] = user.get(exists[1])[STATUS]
             session['user_id'] = exists[1]
+            date = user.get(session['user_id'])[DATE]
+            if datetime.date.today() != date:
+                user.update(session['user_id'], 'percent', '0')
+                user.update(session['user_id'], 'date', str(datetime.date.today()))
+                user.update(session['user_id'], 'days_here', str(int(user.get(exists[1])[DAYS_HERE]) + 1))
+                if int(user.get(exists[1])[DAYS_HERE]) > 30:
+                    user.update(session['user_id'], 'status', MODERATOR)
             return redirect('/home')
     return render_template('login.html', title='Авторизация', form=form)
 
@@ -90,7 +114,8 @@ def waterbalance():
             # print(date, datetime.date.today(), str(date) != str(datetime.date.today()))
             if str(date) != str(datetime.date.today()):
                 percent = 0
-                user.update_percent(session['user_id'], '0')
+                user.update(session['user_id'], 'percent', '0')
+                user.update(session['user_id'], 'date', str(datetime.date.today()))
             else:
                 percent = user.get(session['user_id'])[PERCENT]
             return render_template('water.html', percent=(str(percent)+'%'))
@@ -106,28 +131,36 @@ def waterbalance():
 
         if drink == 'Напиток...':
             return render_template('water.html', message="Выберете напиток")
-        elif drink in {"Вода", "Минеральная вода"}:
-            # new_percent = 100 - round(((water * ((100 - percent) / 100) - size) * 100) / water)
-            pass
-        elif drink in {'Сок', 'Молоко'}:
-            pass
-        elif drink == "Чай":
+        elif drink in {'Фруктовый чай'}:
+            size *= 0.9
+        elif drink in {"Минеральная вода", "Чёрный чай", "Зелёный чай"}:
+            size *= 0.8
+        elif drink in {'Крепкий чёрный чай', 'Крепкий зелёный чай'}:
+            size *= 0.7
+        elif drink in {'Кофе'}:
+            size *= 0.3
+        elif drink in {'Кофе с молоком'}:
+            size *= 0.2
+        elif drink in {'Сок', 'Молоко', 'Какао', 'Морс', 'Компот', 'Кефир', 'Йогурт'}:
+            size = 0
+        elif drink in {'Айран'}:
+            size *= -0.2
+        elif drink in {'Молочный коктейль', 'Спортивный коктейль'}:
             size *= -0.3
-        elif drink == 'Сладкая газированная вода':
-            pass
-        elif drink == "Кофе":
-            size *= -1.5
-        elif drink == "Алкоголь":
-            pass
+        elif drink in {'Сладкая газированная вода', "Спортивный энергетик"}:
+            size += -0.4
+        elif drink in {'Пиво'}:
+            size += -0.5
+        elif drink in {'Белое сухое вино', "Красное сухое вино", 'Алкогольный коктейль'}:
+            size += -0.6
+        elif drink in {'Белое полусладкое вино', "Красное полусладкое вино", 'Энергетик'}:
+            size += -0.8
+        elif drink in {"Крепкий алкоголь"}:
+            size *= -1.8
 
         new_percent = 100 - round(((water * ((100 - percent) / 100) - size) * 100) / water)
 
-        if new_percent > 100:
-            new_percent = 100
-        elif new_percent < 0:
-            new_percent = 0
-
-        user.update_percent(session['user_id'], str(new_percent))
+        user.update(session['user_id'], 'percent', str(new_percent))
         return redirect('/waterbalance')
 
 
@@ -186,12 +219,15 @@ def add_advice():
     elif request.method == 'POST':
         if 'user_name' not in session:
             return redirect('/login')
+        if user.get(session['user_id'])[POSTS] >= 3 and user.get(session['user_id'])[STATUS] == MODERATOR:
+            return render_template('add_advice.html', message="У вас не хватает прав для добавления ещё одного совета")
         title = request.form['name']
         content = request.form['advice']
         if title and content and request.files.get('file', None):
             photo = 'static/images/' + request.files['file'].filename
             request.files['file'].save(photo)
             advices.insert(title, content, photo, session['user_id'])
+            user.update(session['user_id'], 'posts', str(int(user.get(session['user_id'])[POSTS]) + 1))
             return redirect("/advices")
         return render_template('add_advice.html', message="Все поля должны быть заполнены")
 
@@ -216,5 +252,6 @@ if __name__ == '__main__':
 
     cities = Cities()
     cities.init_table()
+
     if 'liveconsole' not in gethostname():
         main()
