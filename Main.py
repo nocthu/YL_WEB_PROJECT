@@ -3,19 +3,15 @@ import requests
 import datetime
 
 from flask import Flask, render_template, redirect, session, request
-from flask_login import LoginManager, login_user
-from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, BooleanField, SubmitField, TextAreaField, RadioField
-from wtforms.validators import DataRequired
-from wtforms.fields.html5 import EmailField
-from data import db_session
-from data.users import User
-
+from flask_ngrok import run_with_ngrok
 from Constants import *
 from DataBase import DataBaseUser, Advices, Cities
 from Forms import RegisterForm, LoginForm, NewsForm
 
+from socket import gethostname
+
 app = Flask(__name__)
+run_with_ngrok(app)
 app.config['SECRET_KEY'] = 'yandexlyceum_secret_key'
 
 
@@ -110,7 +106,7 @@ def waterbalance():
 
         if drink == 'Напиток...':
             return render_template('water.html', message="Выберете напиток")
-        elif drink in {"Вода", "Миниральная вода"}:
+        elif drink in {"Вода", "Минеральная вода"}:
             # new_percent = 100 - round(((water * ((100 - percent) / 100) - size) * 100) / water)
             pass
         elif drink in {'Сок', 'Молоко'}:
@@ -133,13 +129,6 @@ def waterbalance():
 
         user.update_percent(session['user_id'], str(new_percent))
         return redirect('/waterbalance')
-
-
-@app.route('/places')
-def places():
-    if int(session.get('status', GUEST)) & READ:
-        return render_template('places.html')
-    return render_template('b_1.html')
 
 
 @app.route('/weather', methods=['GET', 'POST'])
@@ -227,5 +216,5 @@ if __name__ == '__main__':
 
     cities = Cities()
     cities.init_table()
-
-    main()
+    if 'liveconsole' not in gethostname():
+        main()
