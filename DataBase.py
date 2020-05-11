@@ -61,26 +61,8 @@ class DataBaseUser(DataBase):
 
     def update(self, user_id, what, value):
         cursor = self.connection.cursor()
-        if what == 'percent':
-            cursor.execute("""UPDATE users
-                            SET percent = ?
-                            WHERE id = ?""", (value, str(user_id)))
-        elif what == 'date':
-            cursor.execute("""UPDATE users
-                            SET date = ?
-                            WHERE id = ?""", (value, str(user_id)))
-        elif what == 'user_file':
-            cursor.execute("""UPDATE users
-                            SET user_file = ?
-                            WHERE id = ?""", (value, str(user_id)))
-        elif what == 'days_here':
-            cursor.execute("""UPDATE users
-                            SET days_here = ?
-                            WHERE id = ?""", (value, str(user_id)))
-        elif what == 'user_name':
-            cursor.execute("""UPDATE users
-                            SET user_name = ?
-                            WHERE id = ?""", (value, str(user_id)))
+        req = 'UPDATE users\nSET {} = ?\nWHERE id = ?'.format(what)
+        cursor.execute(req, (value, str(user_id)))
         self.connection.commit()
 
     def get_all(self):
