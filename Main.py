@@ -57,6 +57,9 @@ def delete_acc():
         elif request.method == 'POST':
             answer = request.form['answer']
             if answer == 'yes':
+                vse = user.get(session['user_id'])
+                if vse[USER_FILE] != '/static/img/profile_pic.png':
+                    os.remove(vse[USER_FILE])
                 user.delete(session['user_id'])
                 return redirect('/logout')
             else:
@@ -116,6 +119,7 @@ def login():
                 if int(user.get(exists[1])[DAYS_HERE]) > 30 and session['status'] < MODERATOR:
                     user.update(session['user_id'], 'status', MODERATOR)
             return redirect('/home')
+        return render_template('login.html', title='Авторизация', form=form, message='Неверный логин или пароль')
     return render_template('login.html', title='Авторизация', form=form)
 
 
