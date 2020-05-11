@@ -31,6 +31,7 @@ def choose():
 def profile():
     if int(session.get('status', GUEST)) & READ:
         if request.method == 'GET':
+            # return render_template('a_adv.html')
             return render_template('profile.html', photo=user.get(session['user_id'])[USER_FILE])
         elif request.method == 'POST':
             new_user_name = request.form['name']
@@ -45,13 +46,22 @@ def profile():
                     os.remove(vse[USER_FILE])
                 user.update(session['user_id'], 'user_file', photo)
             return redirect("/profile")
-
     return redirect('/login')
 
 
-@app.route('/delete_acc')
+@app.route('/delete_acc', methods=['GET', 'POST'])
 def delete_acc():
-    pass
+    if int(session.get('status', GUEST)) & READ:
+        if request.method == 'GET':
+            return render_template('access.html')
+        elif request.method == 'POST':
+            answer = request.form['answer']
+            if answer == 'yes':
+                user.delete(session['user_id'])
+                return redirect('/logout')
+            else:
+                return redirect('/profile')
+    return redirect('/login')
 
 
 @app.route('/registration', methods=['GET', 'POST'])
