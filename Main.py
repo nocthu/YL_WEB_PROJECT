@@ -37,7 +37,7 @@ def profile():
     if int(session.get('status', GUEST)) & READ:
         if request.method == 'GET':
             return render_template('profile.html', email=session['email'], user_name=session['user_name'],
-                                   status=session['status'], photo=)
+                                   status=session['status'], photo=1)
         elif request.method == 'POST':
             new_user_name = request.form['user_name']
             if request.files.get('file', None):
