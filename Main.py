@@ -6,7 +6,7 @@ from flask import Flask, render_template, redirect, session, request
 from flask_ngrok import run_with_ngrok
 from Constants import *
 from DataBase import DataBaseUser, Advices, Cities
-from Forms import RegisterForm, LoginForm, NewsForm
+from Forms import RegisterForm, LoginForm
 
 from socket import gethostname
 
@@ -139,18 +139,19 @@ def some_note():
 
 @app.route('/waterbalance', methods=['GET', 'POST'])
 def waterbalance():
+    if not int(session.get('status', GUEST)) & READ:
+        return redirect('/')
+
     if request.method == 'GET':
-        if int(session.get('status', GUEST)) & READ:
-            date = user.get(session['user_id'])[DATE]
-            # print(date, datetime.date.today(), str(date) != str(datetime.date.today()))
-            if str(date) != str(datetime.date.today()):
-                percent = 0
-                user.update(session['user_id'], 'percent', '0')
-                user.update(session['user_id'], 'date', str(datetime.date.today()))
-            else:
-                percent = user.get(session['user_id'])[PERCENT]
-            return render_template('water.html', percent=(str(percent)+'%'))
-        return render_template('b_1.html')
+        date = user.get(session['user_id'])[DATE]
+        # print(date, datetime.date.today(), str(date) != str(datetime.date.today()))
+        if str(date) != str(datetime.date.today()):
+            percent = 0
+            user.update(session['user_id'], 'percent', '0')
+            user.update(session['user_id'], 'date', str(datetime.date.today()))
+        else:
+            percent = user.get(session['user_id'])[PERCENT]
+        return render_template('water.html', percent=(str(percent)+'%'))
     elif request.method == 'POST':
         if request.form['size'].isalpha():
             return render_template('water.html', message="Введите натуральное число")
@@ -197,25 +198,29 @@ def waterbalance():
 
 @app.route('/weather', methods=['GET', 'POST'])
 def weather():
+    if not int(session.get('status', GUEST)) & READ:
+        return redirect('/')
     vse = cities.get_all()
     weather_data = []
     for item in vse:
         city = item[1]
         url = 'http://api.openweathermap.org/data/2.5/weather?q={}&units=metric&lang=ru&appid=eacbcd14d851ef4babf54d5073484017'
         r = requests.get(url.format(city)).json()
-        weather = {
+        weather_dict = {
             'item_id': item[0],
             'city': city,
             'temperature': r['main']['temp'],
             'description': r['weather'][0]['description'],
             'icon': r['weather'][0]['icon']
         }
-        weather_data.append(weather)
+        weather_data.append(weather_dict)
     return render_template('weather.html', weather_data=weather_data)
 
 
 @app.route('/add_city', methods=['GET', 'POST'])
 def add_city():
+    if not int(session.get('status', GUEST)) & READ:
+        return redirect('/')
     if request.method == 'GET':
         return render_template('add_city.html')
     elif request.method == 'POST':
@@ -228,6 +233,8 @@ def add_city():
 
 @app.route('/delete_city/<int:city_id>', methods=['GET'])
 def delete_city(city_id):
+    if not int(session.get('status', GUEST)) & READ:
+        return redirect('/')
     if 'user_name' not in session:
         return redirect('/login')
     cities.delete(city_id)
@@ -245,11 +252,11 @@ def advice():
 
 @app.route('/add_advice', methods=['GET', 'POST'])
 def add_advice():
+    if not int(session.get('status', GUEST)) & READ:
+        return redirect('/')
     if request.method == 'GET':
         return render_template('add_advice.html')
     elif request.method == 'POST':
-        if 'user_name' not in session:
-            return redirect('/login')
         if user.get(session['user_id'])[POSTS] >= 3 and user.get(session['user_id'])[STATUS] == MODERATOR:
             return render_template('add_advice.html', message="У вас не хватает прав для добавления ещё одного совета")
         title = request.form['name']
@@ -265,8 +272,8 @@ def add_advice():
 
 @app.route('/delete_advice/<int:news_id>', methods=['GET'])
 def delete_book(news_id):
-    if 'user_name' not in session:
-        return redirect('/login')
+    if not int(session.get('status', GUEST)) & EXECUTE:
+        return redirect('/')
     vse = advices.get(news_id)
     os.remove(vse[FILE])
     advices.delete(news_id)
