@@ -32,6 +32,21 @@ def choose():
     return render_template('b_1.html')
 
 
+@app.route('/profile', methods=['GET', 'POST'])
+def profile():
+    if int(session.get('status', GUEST)) & READ:
+        if request.method == 'GET':
+            return render_template('profile.html', email=session['email'], user_name=session['user_name'],
+                                   status=session['status'], photo=)
+        elif request.method == 'POST':
+            new_user_name = request.form['user_name']
+            if request.files.get('file', None):
+                photo = 'static/user_files/' + request.files['file'].filename
+                request.files['file'].save(photo)
+                return redirect("/advices")
+    return redirect('/login')
+
+
 @app.route('/registration', methods=['GET', 'POST'])
 def registration():
     form = RegisterForm()
