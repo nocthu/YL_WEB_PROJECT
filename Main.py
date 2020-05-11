@@ -87,7 +87,7 @@ def login():
                 user.update(session['user_id'], 'percent', '0')
                 user.update(session['user_id'], 'date', str(datetime.date.today()))
                 user.update(session['user_id'], 'days_here', str(int(user.get(exists[1])[DAYS_HERE]) + 1))
-                if int(user.get(exists[1])[DAYS_HERE]) > 30:
+                if int(user.get(exists[1])[DAYS_HERE]) > 30 and session['status'] < MODERATOR:
                     user.update(session['user_id'], 'status', MODERATOR)
             return redirect('/home')
     return render_template('login.html', title='Авторизация', form=form)
