@@ -31,22 +31,27 @@ def choose():
 def profile():
     if int(session.get('status', GUEST)) & READ:
         if request.method == 'GET':
-            return render_template('profile.html', email=session['email'], user_name=session['user_name'],
-                                   status=session['status'], photo=1)
+            return render_template('profile.html', photo=user.get(session['user_id'])[USER_FILE])
         elif request.method == 'POST':
-            new_user_name = request.form['user_name']
-            if new_user_name != session['user_name']:
+            new_user_name = request.form['name']
+            if new_user_name != session['user_name'] and new_user_name:
                 user.update(session['user_id'], 'user_name', new_user_name)
                 session['user_name'] = new_user_name
             if request.files.get('file', None):
                 photo = 'static/user_files/' + request.files['file'].filename
                 request.files['file'].save(photo)
-                all = user.get(session['user_id'])
-                os.remove(all[USER_FILE])
+                vse = user.get(session['user_id'])
+                if vse[USER_FILE] != '/static/img/profile_pic.png':
+                    os.remove(vse[USER_FILE])
                 user.update(session['user_id'], 'user_file', photo)
             return redirect("/profile")
 
     return redirect('/login')
+
+
+@app.route('/delete_acc')
+def delete_acc():
+    pass
 
 
 @app.route('/registration', methods=['GET', 'POST'])
@@ -65,6 +70,17 @@ def registration():
                                        message="Такой пользователь уже есть")
 
         user.insert(form.email.data, form.name.data, form.password.data, form.sex.data, form.weight.data, USER)
+        session['email'] = form.email.data
+        session['user_name'] = form.name.data
+        session['status'] = USER
+        session['user_id'] = user.exists(form.email.data, form.password.data)[1]
+        date = user.get(session['user_id'])[DATE]
+        if datetime.date.today() != date:
+            user.update(session['user_id'], 'percent', '0')
+            user.update(session['user_id'], 'date', str(datetime.date.today()))
+            user.update(session['user_id'], 'days_here', str(int(user.get(session['user_id'])[DAYS_HERE]) + 1))
+            if int(user.get(session['user_id'])[DAYS_HERE]) > 30 and session['status'] < MODERATOR:
+                user.update(session['user_id'], 'status', MODERATOR)
         return redirect('/home')
 
     return render_template('r_1.html', title='Регистрация', form=form)
@@ -95,6 +111,7 @@ def login():
 
 @app.route('/logout')
 def logout():
+    session.pop('email', 0)
     session.pop('user_name', 0)
     session.pop('status', 0)
     session.pop('user_id', 0)

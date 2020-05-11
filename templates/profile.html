@@ -8,11 +8,11 @@
 <form method="post" enctype="multipart/form-data">
     <div class="card text-white bg-secondary mb-3" style="max-width: 18rem;">
                  <div class="card-header">
-                     <img class="card-img-top" src={{pic}} alt="Фото профиля." style="border-radius: 25%; width: 50px; height: 50px" align="bottom">
-                     <a class="btn btn-warning" href="/profile">{{session["user_name"]}}</a>
+                     <img class="card-img-top" src={{photo}} alt="Фото профиля." style="border-radius: 25%; width: 50px; height: 50px" align="bottom">
+                     <a class="btn btn-warning" href="/profile">{{session["email"]}}</a>
                  </div>
     </div>
-    <a class="btn btn-danger" href="/delete">Удалить аккаунт</a>
+    <a class="btn btn-danger" href="/delete_acc">Удалить аккаунт</a>
     <br>
     <h5>Ваше имя</h5>
     <div class="form-group row">
