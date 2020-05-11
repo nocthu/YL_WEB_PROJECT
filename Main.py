@@ -33,8 +33,8 @@ def profile():
         if request.method == 'GET':
             return render_template('profile.html', photo=user.get(session['user_id'])[USER_FILE])
         elif request.method == 'POST':
-            new_user_name = request.form['user_name']
-            if new_user_name != session['user_name']:
+            new_user_name = request.form['name']
+            if new_user_name != session['user_name'] and new_user_name:
                 user.update(session['user_id'], 'user_name', new_user_name)
                 session['user_name'] = new_user_name
             if request.files.get('file', None):
@@ -47,6 +47,11 @@ def profile():
             return redirect("/profile")
 
     return redirect('/login')
+
+
+@app.route('/delete_acc')
+def delete_acc():
+    pass
 
 
 @app.route('/registration', methods=['GET', 'POST'])
@@ -267,4 +272,3 @@ if __name__ == '__main__':
 
     if 'liveconsole' not in gethostname():
         main()
-
