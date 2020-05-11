@@ -137,11 +137,6 @@ def waterbalance():
 
         new_percent = 100 - round(((water * ((100 - percent) / 100) - size) * 100) / water)
 
-        # if new_percent > 100:
-        #     new_percent = 100
-        # elif new_percent < 0:
-        #     new_percent = 0
-
         user.update(session['user_id'], 'percent', str(new_percent))
         return redirect('/waterbalance')
 

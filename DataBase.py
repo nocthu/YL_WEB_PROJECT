@@ -53,7 +53,7 @@ class DataBaseUser(DataBase):
 
     def get(self, user_id):
         cursor = self.connection.cursor()
-        cursor.execute("SELECT * FROM users WHERE id = ?", (str(user_id)))
+        cursor.execute("SELECT * FROM users WHERE id = ?", (str(user_id),))
         row = cursor.fetchone()
         return row
 
@@ -110,7 +110,7 @@ class Advices(DataBase):
 
     def get(self, advices_id):
         cursor = self.connection.cursor()
-        cursor.execute("SELECT * FROM advices WHERE id = ?", (str(advices_id)))
+        cursor.execute("SELECT * FROM advices WHERE id = ?", (str(advices_id),))
         row = cursor.fetchone()
         return row
 
@@ -153,7 +153,7 @@ class Cities(DataBase):
 
     def get(self, cities_id):
         cursor = self.connection.cursor()
-        cursor.execute("SELECT * FROM cities WHERE id = ?", (str(cities_id)))
+        cursor.execute("SELECT * FROM cities WHERE id = ?", (str(cities_id),))
         row = cursor.fetchone()
         return row
 
