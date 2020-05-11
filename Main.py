@@ -197,9 +197,9 @@ def waterbalance():
 
 @app.route('/weather', methods=['GET', 'POST'])
 def weather():
-    all = cities.get_all()
+    vse = cities.get_all()
     weather_data = []
-    for item in all:
+    for item in vse:
         city = item[1]
         url = 'http://api.openweathermap.org/data/2.5/weather?q={}&units=metric&lang=ru&appid=eacbcd14d851ef4babf54d5073484017'
         r = requests.get(url.format(city)).json()
@@ -236,9 +236,9 @@ def delete_city(city_id):
 
 @app.route('/advices')
 def advice():
-    all = advices.get_all()
+    vse = advices.get_all()
     return render_template('advices.html',
-                           advices=all,
+                           advices=vse,
                            write=(int(session.get('status', GUEST)) & WRITE),
                            execute=(int(session.get('status', GUEST)) & EXECUTE))
 
@@ -267,8 +267,8 @@ def add_advice():
 def delete_book(news_id):
     if 'user_name' not in session:
         return redirect('/login')
-    all = advices.get(news_id)
-    os.remove(all[FILE])
+    vse = advices.get(news_id)
+    os.remove(vse[FILE])
     advices.delete(news_id)
     return redirect("/advices")
 
