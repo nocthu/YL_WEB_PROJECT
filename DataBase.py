@@ -57,11 +57,16 @@ class DataBaseUser(DataBase):
         row = cursor.fetchone()
         return row
 
-    def update_percent(self, user_id, value):
+    def update(self, user_id, what, value):
         cursor = self.connection.cursor()
-        cursor.execute("""UPDATE users
-                        SET percent = ?
-                        WHERE id = ?""", (value, str(user_id)))
+        if what == 'percent':
+            cursor.execute("""UPDATE users
+                            SET percent = ?
+                            WHERE id = ?""", (value, str(user_id)))
+        if what == 'date':
+            cursor.execute("""UPDATE users
+                            SET date = ?
+                            WHERE id = ?""", (value, str(user_id)))
         self.connection.commit()
 
     def get_all(self):

@@ -90,7 +90,8 @@ def waterbalance():
             # print(date, datetime.date.today(), str(date) != str(datetime.date.today()))
             if str(date) != str(datetime.date.today()):
                 percent = 0
-                user.update_percent(session['user_id'], '0')
+                user.update(session['user_id'], 'percent', '0')
+                user.update(session['user_id'], 'date', str(datetime.date.today()))
             else:
                 percent = user.get(session['user_id'])[PERCENT]
             return render_template('water.html', percent=(str(percent)+'%'))
@@ -106,28 +107,42 @@ def waterbalance():
 
         if drink == 'Напиток...':
             return render_template('water.html', message="Выберете напиток")
-        elif drink in {"Вода", "Минеральная вода"}:
-            # new_percent = 100 - round(((water * ((100 - percent) / 100) - size) * 100) / water)
-            pass
-        elif drink in {'Сок', 'Молоко'}:
-            pass
-        elif drink == "Чай":
+        elif drink in {'Фруктовый чай'}:
+            size *= 0.9
+        elif drink in {"Минеральная вода", "Чёрный чай", "Зелёный чай"}:
+            size *= 0.8
+        elif drink in {'Крепкий чёрный чай', 'Крепкий зелёный чай'}:
+            size *= 0.7
+        elif drink in {'Кофе'}:
+            size *= 0.3
+        elif drink in {'Кофе с молоком'}:
+            size *= 0.2
+        elif drink in {'Сок', 'Молоко', 'Какао', 'Морс', 'Компот', 'Кефир', 'Йогурт'}:
+            size = 0
+            print(1)
+        elif drink in {'Айран'}:
+            size *= -0.2
+        elif drink in {'Молочный коктейль', 'Спортивный коктейль'}:
             size *= -0.3
-        elif drink == 'Сладкая газированная вода':
-            pass
-        elif drink == "Кофе":
-            size *= -1.5
-        elif drink == "Алкоголь":
-            pass
+        elif drink in {'Сладкая газированная вода', "Спортивный энергетик"}:
+            size += -0.4
+        elif drink in {'Пиво'}:
+            size += -0.5
+        elif drink in {'Белое сухое вино', "Красное сухое вино", 'Алкогольный коктейль'}:
+            size += -0.6
+        elif drink in {'Белое полусладкое вино', "Красное полусладкое вино", 'Энергетик'}:
+            size += -0.8
+        elif drink in {"Крепкий алкоголь"}:
+            size *= -1.8
 
         new_percent = 100 - round(((water * ((100 - percent) / 100) - size) * 100) / water)
 
-        if new_percent > 100:
-            new_percent = 100
-        elif new_percent < 0:
-            new_percent = 0
+        # if new_percent > 100:
+        #     new_percent = 100
+        # elif new_percent < 0:
+        #     new_percent = 0
 
-        user.update_percent(session['user_id'], str(new_percent))
+        user.update(session['user_id'], 'percent', str(new_percent))
         return redirect('/waterbalance')
 
 
