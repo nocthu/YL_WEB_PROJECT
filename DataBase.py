@@ -80,6 +80,13 @@ class DataBaseUser(DataBase):
         row = cursor.fetchone()
         return (True, row[0]) if row else (False,)
 
+    def delete(self, user_id):
+        cursor = self.connection.cursor()
+        cursor.execute('''DELETE FROM users WHERE id = ?''', (str(user_id),))
+
+        cursor.close()
+        self.connection.commit()
+
 
 class Advices(DataBase):
     def __init__(self):

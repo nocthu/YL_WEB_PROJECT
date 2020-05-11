@@ -1,0 +1,18 @@
+{% extends "b_1.html" %}
+
+{% block content %}
+<head>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/home.css') }}">
+</head>
+<body>
+<form method="post" enctype="multipart/form-data">
+    <h5>ВЫ ТОЧНО ХОТИТЕ УДАЛИТЬ СВОЙ ААККАУНТ?</h5>
+    <div>
+        <center>
+            <button type="submit" class="btn btn-success btn-lg btn-block" value="yes" name="answer">ДА</button>
+            <button type="submit" class="btn btn-success btn-lg btn-block" value="no" name="answer">НЕТ</button>
+        </center>
+    </div>
+</form>
+</body>
+{% endblock %}
