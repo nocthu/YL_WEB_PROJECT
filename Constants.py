@@ -7,13 +7,17 @@ USER = READ
 MODERATOR = READ | WRITE
 ADMIN = READ | WRITE | EXECUTE
 
-
-STATUS = 7
+# for class DataBaseUser
 USERNAME = 1
-FILE = 3
 WATER = 6
+STATUS = 7
 DATE = 8
 PERCENT = 9
+USER_FILE = 10
+DAYS_HERE = 11
+
+# for class DataBaseAdvices
+FILE = 3
 
 if __name__ == '__main__':
     # print(USER & READ, USER & WRITE, USER & EXECUTE)

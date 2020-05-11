@@ -40,10 +40,17 @@ def profile():
                                    status=session['status'], photo=1)
         elif request.method == 'POST':
             new_user_name = request.form['user_name']
+            if new_user_name != session['user_name']:
+                user.update(session['user_id'], 'user_name', new_user_name)
+                session['user_name'] = new_user_name
             if request.files.get('file', None):
                 photo = 'static/user_files/' + request.files['file'].filename
                 request.files['file'].save(photo)
-                return redirect("/advices")
+                all = user.get(session['user_id'])
+                os.remove(all[USER_FILE])
+                user.update(session['user_id'], 'user_file', photo)
+            return redirect("/profile")
+
     return redirect('/login')
 
 

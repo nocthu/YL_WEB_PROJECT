@@ -32,7 +32,9 @@ class DataBaseUser(DataBase):
                              water VARCHAR(50),
                              status VARCHAR(50),
                              date VARCHAR(50),
-                             percent VARCHAR(50)
+                             percent VARCHAR(50),
+                             user_file VARCHAR(100),
+                             days_here VARCHAR(50)
                              )''')
         cursor.close()
         self.connection.commit()
@@ -44,10 +46,10 @@ class DataBaseUser(DataBase):
         else:
             sex = (35, 'М')
         cursor.execute('''INSERT INTO users 
-                          (email, user_name, password, sex, weight, water, status, date, percent) 
-                          VALUES (?,?,?,?,?,?,?,?,?)''',
+                          (email, user_name, password, sex, weight, water, status, date, percent, user_file, days_here) 
+                          VALUES (?,?,?,?,?,?,?,?,?,?,?)''',
                        (email, user_name, password_hash, sex[1], weight, int(weight) * sex[0], status,
-                        datetime.date.today(), 0))
+                        datetime.date.today(), 0, '', 1))
         cursor.close()
         self.connection.commit()
 
@@ -63,9 +65,21 @@ class DataBaseUser(DataBase):
             cursor.execute("""UPDATE users
                             SET percent = ?
                             WHERE id = ?""", (value, str(user_id)))
-        if what == 'date':
+        elif what == 'date':
             cursor.execute("""UPDATE users
                             SET date = ?
+                            WHERE id = ?""", (value, str(user_id)))
+        elif what == 'user_file':
+            cursor.execute("""UPDATE users
+                            SET user_file = ?
+                            WHERE id = ?""", (value, str(user_id)))
+        elif what == 'days_here':
+            cursor.execute("""UPDATE users
+                            SET days_here = ?
+                            WHERE id = ?""", (value, str(user_id)))
+        elif what == 'user_name':
+            cursor.execute("""UPDATE users
+                            SET user_name = ?
                             WHERE id = ?""", (value, str(user_id)))
         self.connection.commit()
 
