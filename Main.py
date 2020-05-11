@@ -106,6 +106,7 @@ def login():
 
 @app.route('/logout')
 def logout():
+    session.pop('email', 0)
     session.pop('user_name', 0)
     session.pop('status', 0)
     session.pop('user_id', 0)
