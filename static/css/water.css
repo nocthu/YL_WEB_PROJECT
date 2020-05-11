@@ -1,0 +1,14 @@
+.slider-wrapper {
+  display: inline-block;
+  width: 100px;
+  height: 500px;
+  padding: 0;
+}
+
+.slider-wrapper input {
+  width: 100px;
+  height: 500px;
+  margin: 0;
+  transform-origin: 75px 75px;
+  transform: rotate(-90deg);
+}

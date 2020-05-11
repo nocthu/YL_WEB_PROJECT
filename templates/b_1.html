@@ -7,8 +7,6 @@
           href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
           integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
           crossorigin="anonymous">
-<!--    <link rel="stylesheet"-->
-<!--          href="bootstrap.bundle.min.js / bootstrap.bundle.js">-->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/home.css') }}">
     <title>RE:SERVICES</title>
     <style>
@@ -114,14 +112,13 @@
                 <li>
                     <a href="#" class="fa fa-">RE:SERVICES</a>
                     <ul>
-                        <li><a href="/some_note" class="fa fa-">О проекте</a></li>
-                        <li><a href="/home" class="fa fa-">Вернуться на Начальную страницу</a></li>
+                        <li><a href="/some_note" class="fa">О проекте</a></li>
+                        <li><a href="/home" class="fa">Вернуться на Начальную страницу</a></li>
                     </ul>
                 </li>
-                <li><a href="/waterbalance" class="fa fa-">Waterbalance</a></li>
-                <li><a href="/places" class="fa fa-">Places</a></li>
-                <li><a href="/weather" class="fa fa-cloud-sun">Weather</a></li>
-                <li><a href="/advices" class="fa fa-">Advices</a></li>
+                <li><a href="/waterbalance" class="fa">Waterbalance</a></li>
+                <li><a href="/weather" class="fa">Weather</a></li>
+                <li><a href="/advices" class="fa">Advices</a></li>
             </ul>
         </nav>
     </header>
@@ -131,8 +128,8 @@
     {% if "user_name" in session %}
         <a class="btn btn-dark" href="/logout">Выйти</a><br><br>
             <div class="card text-white bg-secondary mb-3" style="max-width: 18rem;">
-                 <div class="card-header"><img class="card-img-top" src="/static/img/profile_pic.png" alt="Фото профиля." style="border-radius: 25%; width: 50px; height: 50px" align="bottom">
-                {{session["user_name"]}}</div>
+                 <div class="card-header"><img class="card-img-top" src={{pic}} alt="Фото профиля." style="border-radius: 25%; width: 50px; height: 50px" align="bottom">
+                <a class="btn btn-warning" href="/profile" data-toggle="tooltip" data-placement="bottom" title="Редактировать профиль">{{session["user_name"]}}</a></div>
             </div>
         <center><div class="content_1"><h1>Добро пожаловать, {{session["user_name"]}}</h1></div></div></center>
     {% else %}

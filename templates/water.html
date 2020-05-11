@@ -1,32 +1,72 @@
 {% extends "b_1.html" %}
 
 {% block content %}
-    </br>
-    <center><div class="content_1"><h1>Waterbalance</h1></div></div></center>
+<head>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/water.css') }}">
+</head>
+<body>
+<form method="post" enctype="multipart/form-data">
+    <br>
     <div class="progress">
       <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar"
-        aria-valuenow="75" aria-valuemin="0+-+-" aria-valuemax="100" style="width: percent"></div>
+        aria-valuenow="75" aria-valuemin="0+-+-" aria-valuemax="100" style="width: {{percent}}"></div>
     </div>
+    <center>
+        <br><center><div><h3>{{percent}} от вашей дневной нормы</h3></div></center><br>
     <form>
-        <div class="form-row align-items-center">
+        <div class="card text-white bg-secondary mb-3" style="max-width: 36rem;">
+          <div class="card-header bg-transparent text-white bg-secondary">
+              <div class="form-row align-items-center">
             <div class="col-auto my-1">
-                <label class="mr-sm-2" for="inlineFormCustomSelect">Укажите напиток</label>
-                <select class="custom-select mr-sm-2" id="inlineFormCustomSelect">
+                <h5 class="mr-sm-2" for="inlineFormCustomSelect">Укажите напиток</h5>
+                <select class="custom-select mr-sm-2" id="inlineFormCustomSelect" name="drink">
                     <option selected>Напиток...</option>
-                    <option value="1">Вода</option>
-                    <option value="2">Минеральная вода</option>
-                    <option value="3">Чай</option>
-                    <option value="4">Черный кофе</option>
-                    <option value="5">Сладкая газированная вода</option>
-                    <option value="6">Сок</option>
-                    <option value="7">Крепкий алкоголь</option>
-                    <option value="8">Молоко</option>
+                    <option value="Вода">Вода</option>
+                    <option value="Минеральная вода">Минеральная вода</option>
+                    <option value="Чёрный чай">Чёрный чай</option>
+                    <option value="Крепкий чёрный чай">Крепкий чёрный чай</option>
+                    <option value="Зелёный чай">Зелёный чай</option>
+                    <option value="Крепкий зелёный чай">Крепкий зелёный чай</option>
+                    <option value="Фруктовый чай">Фруктовый чай</option>
+                    <option value="Кофе">Кофе</option>
+                    <option value="Кофе с молоком">Кофе с молоком</option>
+                    <option value="Сок">Сок</option>
+                    <option value="Молоко">Молоко</option>
+                    <option value="Какао">Какао</option>
+                    <option value="Морс">Морс</option>
+                    <option value="Компот">Компот</option>
+                    <option value="Кефир">Кефир</option>
+                    <option value="Йогурт">Йогурт</option>
+                    <option value="Айран">Айран</option>
+                    <option value="Молочный коктейль">Молочный коктейль</option>
+                    <option value="Спортивный коктейль">Спортивный коктейль</option>
+                    <option value="Спортивный энергетик">Спортивный энергетик</option>
+                    <option value="Энергетик">Энергетик</option>
+                    <option value="Сладкая газированная вода">Сладкая газированная вода</option>
+                    <option value="Крепкий алкоголь">Крепкий алкоголь</option>
+                    <option value="Пиво">Пиво</option>
+                    <option value="Белое сухое вино">Белое сухое вино</option>
+                    <option value="Красное сухое вино">Красное сухое вино</option>
+                    <option value="Белое полусладкое вино">Белое полусладкое вино</option>
+                    <option value="Красное полусладкое вино">Красное полусладкое вино</option>
+                    <option value="Алкогольный коктейль">Алкогольный коктейль</option>
                 </select>
             </div>
         </div>
-        <div>
-            <input type="range" min="50" max="500" step="50" value="50" name="size">
+          </div>
+          <div class="card-body text-white bg-secondary">
+            <h5 class="card-title">Укажите объем, мл</h5>
+            <div>
+            <input type="text" size="30" class="text" name="size">
+            </div>
+          </div>
+          <div class="card-footer btext-white bg-secondary">
+              <button type="submit" class="btn btn-primary btn-lg btn-block">Добавить</button>
+          </div>
         </div>
-        <button type="button" class="btn btn-primary btn-lg">Добавить</button>
     </form>
+    </center>
+    {{message}}
+</form>
+</body>
 {% endblock %}
