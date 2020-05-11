@@ -20,15 +20,10 @@ def main():
 
 
 @app.route('/')
-def home():
-    # print(session.get('status', 0))
-    if int(session.get('status', GUEST)) & READ:
-        return render_template('b_1.html')
-    return render_template('b_1.html')
-
-
 @app.route('/home', methods=['GET', 'POST'])
 def choose():
+    if int(session.get('status', GUEST)) & READ:
+        return render_template('b_1.html', pic=str(user.get(session['user_id'])[USER_FILE]))
     return render_template('b_1.html')
 
 

@@ -49,7 +49,7 @@ class DataBaseUser(DataBase):
                           (email, user_name, password, sex, weight, water, status, date, percent, user_file, days_here) 
                           VALUES (?,?,?,?,?,?,?,?,?,?,?)''',
                        (email, user_name, password_hash, sex[1], weight, int(weight) * sex[0], status,
-                        datetime.date.today(), 0, '', 1))
+                        datetime.date.today(), 0, '/static/img/profile_pic.png', 1))
         cursor.close()
         self.connection.commit()
 
