@@ -13,6 +13,7 @@ from Forms import RegisterForm, LoginForm
 app = Flask(__name__)
 run_with_ngrok(app)
 app.config['SECRET_KEY'] = 'yandexlyceum_secret_key'
+message = ''
 
 
 def main():
@@ -149,13 +150,13 @@ def some_note():
 
 @app.route('/waterbalance', methods=['GET', 'POST'])
 def waterbalance():
+    global message
     if not int(session.get('status', GUEST)) & READ:
         return redirect('/')
-
     if request.method == 'GET':
         new_day()
         percent = user.get(session['user_id'])[PERCENT]
-        return render_template('water.html', percent=(str(percent)+'%'))
+        return render_template('water.html', percent=(str(percent)+'%'), message=message)
     elif request.method == 'POST':
         if not request.form['size'].isdigit():
             return render_template('water.html', message="Введите натуральное число")
@@ -181,6 +182,7 @@ def waterbalance():
             size *= 0.2
         elif drink in {'Сок', 'Молоко', 'Какао', 'Морс', 'Компот', 'Кефир', 'Йогурт'}:
             size = 0
+            message = 'Некоторые напитки являются едой и не влияют на ваш водный баланс'
         elif drink in {'Айран'}:
             size *= -0.2
         elif drink in {'Молочный коктейль', 'Спортивный коктейль'}:
@@ -195,6 +197,11 @@ def waterbalance():
             size *= -0.8
         elif drink in {"Крепкий алкоголь"}:
             size *= -1.8
+
+        if size < 0:
+            message = 'Алкоголь и другие напитки повышают вашу дневную норму воды'
+        elif size > 0:
+            message = ''
 
         new_percent = 100 - round(((water * ((100 - percent) / 100) - size) * 100) / water)
 
