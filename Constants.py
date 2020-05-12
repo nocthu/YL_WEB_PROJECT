@@ -25,17 +25,6 @@ POSTS = 12
 # for class DataBaseAdvices
 FILE = 3
 
-if __name__ == '__main__':
-    # print(USER & READ, USER & WRITE, USER & EXECUTE)
-    # print(MODERATOR & READ, MODERATOR & WRITE, MODERATOR & EXECUTE)
-    # print(ADMIN & READ, ADMIN & WRITE, ADMIN & EXECUTE)
-    # if MODERATOR & WRITE:
-    #     print(1)
-    # if USER & WRITE:
-    #     print(2)
-    print(ADMIN)
-    print(MODERATOR)
-
 
 
 
