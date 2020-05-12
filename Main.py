@@ -151,7 +151,7 @@ def some_note():
 
 
 @app.route('/waterbalance', methods=['GET', 'POST'])
-def waterbalance():
+def water_balance():
     global message
     if not int(session.get('status', GUEST)) & READ:
         return redirect('/')
