@@ -1,7 +1,6 @@
 import os
 import requests
 import datetime
-from socket import gethostname
 
 from flask import Flask, render_template, redirect, session, request
 from flask_ngrok import run_with_ngrok
@@ -88,7 +87,16 @@ def registration():
             return render_template('r_1.html', title='Регистрация',
                                    form=form,
                                    message="Пароли не совпадают")
+        if not form.weight.data.isdigit():
+            return render_template('r_1.html', title='Регистрация',
+                                   form=form,
+                                   message="Укажите свою массу в килограммах, записав реальное число.")
+        elif int(form.weight.data) >= 500 or int(form.weight.data) <= 0:
+            return render_template('r_1.html', title='Регистрация',
+                                   form=form,
+                                   message="Укажите свою массу в килограммах, записав реальное число.")
         vse = user.get_all()
+        print(vse)
         for i in vse:
             if i == form.email.data:
                 return render_template('r_1.html', title='Регистрация',
@@ -145,10 +153,13 @@ def waterbalance():
     if request.method == 'GET':
         new_day()
         percent = user.get(session['user_id'])[PERCENT]
+        print(percent)
         return render_template('water.html', percent=(str(percent)+'%'))
     elif request.method == 'POST':
-        if request.form['size'].isalpha():
+        if not request.form['size'].isdigit():
             return render_template('water.html', message="Введите натуральное число")
+        elif int(request.form['size']) >= 40000:
+            return render_template('water.html', message="Не балуйтесь...")
 
         size = int(request.form['size'])
         drink = request.form['drink']
@@ -263,7 +274,7 @@ def add_advice():
     elif request.method == 'POST':
         title = request.form['name']
         content = request.form['advice']
-        if int(user.get(session['user_id'])[POSTS]) >= 3 and int(user.get(session['user_id'])[STATUS]) == MODERATOR:
+        if int(user.get(session['user_id'])[POSTS]) >= 1 and int(user.get(session['user_id'])[STATUS]) == MODERATOR:
             return render_template('add_advice.html', message="У вас не хватает прав для добавления ещё одного совета."
                                                               " Без паники, завтра вы всё сможете!")
         if title and content and request.files.get('file', None):
@@ -296,5 +307,4 @@ if __name__ == '__main__':
     cities = Cities()
     cities.init_table()
 
-    if 'liveconsole' not in gethostname():
-        main()
+    main()
