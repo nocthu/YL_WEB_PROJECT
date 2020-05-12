@@ -1,3 +1,4 @@
+# encoding: utf-8
 import sqlalchemy
 import sqlite3
 import datetime

@@ -1,3 +1,4 @@
+# encoding: utf-8
 from flask import Flask, render_template, redirect
 from flask_login import LoginManager, login_user
 from flask_wtf import FlaskForm

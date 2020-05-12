@@ -1,3 +1,4 @@
+# encoding: utf-8
 READ = 1
 WRITE = 2
 EXECUTE = 4
