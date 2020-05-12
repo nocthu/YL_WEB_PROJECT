@@ -2,48 +2,41 @@
 
 {% block content %}
 <br>
-<center><div class="content_1"><h1>Advices</h1></div></div></center>
+<center><div class="content_1"><h1>Advices</h1></div></div>
 {% if "user_name" in session %}
     {% if write %}
-    <a class="btn btn-success" href="/add_advice">Добавить совет</a>
+    <a class="btn btn-success btn-lg btn-block" href="/add_advice">Добавить совет</a>
     {% endif %}
 {% endif %}
 <div class="row">
     <br><br><br>
 </div>
 {% for item in advices %}
-
-<div class="row">
-    <div class="col-md-4">
-        <br>
-        <div class="card text-white bg-primary mb-3" style="max-width: 18rem;">
-          <div class="card-header">Совет</div>
-            {% if execute %}
-                <a class="btn btn-danger" href="/delete_advice/{{item[0]}}">Удалить совет</a>
-            {% endif %}
-          <div class="card-body">
-            <h5 class="card-title">{{item[1]}}</h5>
-            <p class="card-text">{{item[2]}}
-            <img width="200" height="100" class="img-thumbnail img-fluid" src="{{item[3]}}" alt=""></p>
-          </div>
-        </div>
-    </div>
-    <div class="col-md-4">
-        <img width="3000" height="1500" class="img-thumbnail img-fluid" src="{{item[3]}}" alt="">
-    </div>
-    <div class="col-md-1">
-    </div>
-            <div class="card" style="width: 18rem; align: right;">
-              <img class="card-img-top" src="/static/img/a.png" alt="Здесь могла быть ваша реклама.">
-              <div class="card-body">
-                <p class="card-text">Здесь могла быть ваша реклама.</p>
-              </div>
+<div class="card text-white bg-primary mb-3" style="max-width: 54rem;">
+    <center><div class="card-header">Совет</div></center>
+    {% if execute %}
+        <a class="btn btn-danger" href="/delete_advice/{{item[0]}}">Удалить совет</a>
+    {% endif %}
+    <div class="card-body text-dark">
+        <div class="card-group">
+           <div class="card bg-light mb-3 border-primary" style="max-width: 36rem;">
+                <div class="card-header border-light">{{item[1]}}</div>
+                <div class="card-body border-primary">
+                    <p class="card-text">
+                        {{item[2]}}<br>
+                        <img width="300" height="150" class="img-thumbnail img-fluid" src="{{item[3]}}" alt="">
+                    </p>
+                </div>
             </div>
-</div>
-<div class="row">
-    <br><br><br>
-</div>
-
+           <div class="card bg-light mb-3 border-primary" style="max-width: 18rem;">
+                <img class="card-img-top" src="/static/img/a.png" alt="Здесь могла быть ваша реклама.">
+                <div class="card-body border-primary">
+                    <p class="card-text">Здесь могла быть ваша реклама.</p>
+                </div>
+            </div>
+        </div>
+      </div>
+    </div>
 {% endfor %}
-
+</center>
 {% endblock %}
