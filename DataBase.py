@@ -73,10 +73,10 @@ class DataBaseUser(DataBase):  # for data about users
         rows = cursor.fetchall()
         return rows
 
-    def exists(self, email, password_hash):
+    def exists(self, email):
         cursor = self.connection.cursor()
-        cursor.execute("SELECT * FROM users WHERE email = ? AND password = ?",
-                       (email, password_hash))
+        cursor.execute("SELECT * FROM users WHERE email = ?",
+                       (email,))
         row = cursor.fetchone()
         return (True, row[0]) if row else (False,)
 

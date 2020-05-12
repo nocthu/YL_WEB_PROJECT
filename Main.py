@@ -1,6 +1,7 @@
 # encoding: utf-8
 import os
 import datetime
+from werkzeug.security import generate_password_hash, check_password_hash
 
 import requests
 from flask import Flask, render_template, redirect, session, request
@@ -99,18 +100,20 @@ def registration():
             return render_template('r_1.html', title='Регистрация',
                                    form=form,
                                    message="Укажите свою массу в килограммах, записав реальное число.")
-        vse = user.get_all()
+        vse = [i[EMAIL] for i in user.get_all()]
         for i in vse:
             if i == form.email.data:
                 return render_template('r_1.html', title='Регистрация',
                                        form=form,
                                        message="Такой пользователь уже есть")
 
-        user.insert(form.email.data, form.name.data, form.password.data, form.sex.data, form.weight.data, USER)
+        password_hash = generate_password_hash(form.password.data)
+
+        user.insert(form.email.data, form.name.data, password_hash, form.sex.data, form.weight.data, USER)
         session['email'] = form.email.data
         session['user_name'] = form.name.data
         session['status'] = USER
-        session['user_id'] = user.exists(form.email.data, form.password.data)[1]
+        session['user_id'] = user.exists(form.email.data)[1]
         return redirect('/home')
 
     return render_template('r_1.html', title='Регистрация', form=form)
@@ -121,9 +124,8 @@ def login():
     form = LoginForm()
     if form.validate_on_submit():
         email = form.email.data
-        password = form.password.data
-        exists = user.exists(email, password)
-        if exists[0]:
+        exists = user.exists(email)
+        if exists[0] and check_password_hash(user.get(exists[1])[PASSWORD], form.password.data):
             session['email'] = email
             session['user_name'] = user.get(exists[1])[USERNAME]
             session['status'] = user.get(exists[1])[STATUS]
