@@ -19,6 +19,8 @@ def main():
 
 
 def new_day():
+    if 'user_id' not in session:
+        return
     date = user.get(session['user_id'])[DATE]
     if str(datetime.date.today()) != str(date):
         user.update(session['user_id'], 'percent', '0')
@@ -96,7 +98,6 @@ def registration():
                                    form=form,
                                    message="Укажите свою массу в килограммах, записав реальное число.")
         vse = user.get_all()
-        print(vse)
         for i in vse:
             if i == form.email.data:
                 return render_template('r_1.html', title='Регистрация',
@@ -153,7 +154,6 @@ def waterbalance():
     if request.method == 'GET':
         new_day()
         percent = user.get(session['user_id'])[PERCENT]
-        print(percent)
         return render_template('water.html', percent=(str(percent)+'%'))
     elif request.method == 'POST':
         if not request.form['size'].isdigit():
@@ -207,8 +207,6 @@ def weather():
         return redirect('/')
     new_day()
     vse = cities.get_all()
-    # print(len(vse))
-    # print(vse)
     if len(vse) > 10:
         cities.delete(vse[0][0])
         del vse[1]
