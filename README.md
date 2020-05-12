@@ -10,16 +10,16 @@ Russian:
 При локальном запуске в базе данных есть уже три созданных аккаунта для наглядной демонстрации возможностей:
 
 Administrator: 
-почта: 1@1.1
-пароль: 1
+почта: 1@1.1;
+пароль: 1;
 
 Moderator: 
-логин: 2@2.2
-пароль: 2
+логин: 2@2.2;
+пароль: 2;
 
 User: 
-логин: 3@3.3
-пароль: 3
+логин: 3@3.3;
+пароль: 3;
 
 По техническим вопросам и предложениям писать сюда: denjasan@yandex.ru
 
@@ -34,15 +34,15 @@ Now about a small flaw: there is a small chance that the app will crash with an 
 When running locally, there are already three accounts created in the database to demonstrate the capabilities:
 
 Administrator:
-email: 1@1.1
-password: 1
+email: 1@1.1;
+password: 1;
 
 Moderator:
-login: 2@2.2
-password: 2
+login: 2@2.2;
+password: 2;
 
 User:
-login: 3@3.3
-password: 3
+login: 3@3.3;
+password: 3;
 
 For technical questions and suggestions, write here: denjasan@yandex.ru
