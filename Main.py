@@ -1,8 +1,8 @@
 # encoding: utf-8
 import os
-import requests
 import datetime
 
+import requests
 from flask import Flask, render_template, redirect, session, request
 from flask_ngrok import run_with_ngrok
 
@@ -13,15 +13,15 @@ from Forms import RegisterForm, LoginForm
 app = Flask(__name__)
 run_with_ngrok(app)
 app.config['SECRET_KEY'] = 'yandexlyceum_secret_key'
-message = ''
+message = ''  # global variable for water balance
 
 
 def main():
     app.run()
 
 
-def new_day():
-    if 'user_id' not in session:
+def new_day():  # function for update data in new day
+    if 'user_id' not in session:  # the first type of access check
         return
     date = user.get(session['user_id'])[DATE]
     if str(datetime.date.today()) != str(date):
@@ -37,7 +37,7 @@ def new_day():
 @app.route('/')
 @app.route('/home', methods=['GET', 'POST'])
 def choose():
-    if int(session.get('status', GUEST)) & READ:
+    if int(session.get('status', GUEST)) & READ:  # and the second type of access check for read
         new_day()
         return render_template('b_1.html', pic=str(user.get(session['user_id'])[USER_FILE]))
     return render_template('b_1.html')
@@ -273,7 +273,7 @@ def advice():
 
 @app.route('/add_advice', methods=['GET', 'POST'])
 def add_advice():
-    if not int(session.get('status', GUEST)) & WRITE:
+    if not int(session.get('status', GUEST)) & WRITE:  # checking for write access
         return redirect('/')
     if request.method == 'GET':
         return render_template('add_advice.html')
@@ -294,7 +294,7 @@ def add_advice():
 
 @app.route('/delete_advice/<int:news_id>', methods=['GET'])
 def delete_book(news_id):
-    if not int(session.get('status', GUEST)) & EXECUTE:
+    if not int(session.get('status', GUEST)) & EXECUTE:  # checking for execute access
         return redirect('/')
     vse = advices.get(news_id)
     os.remove(vse[FILE])
@@ -304,13 +304,13 @@ def delete_book(news_id):
 
 if __name__ == '__main__':
 
-    user = DataBaseUser()
+    user = DataBaseUser()  # data from DataBase about all users
     user.init_table()
 
-    advices = Advices()
+    advices = Advices()  # data from DataBase about all advices
     advices.init_table()
 
-    cities = Cities()
+    cities = Cities()  # data from DataBase about all cities for weather
     cities.init_table()
 
     main()

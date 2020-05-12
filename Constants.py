@@ -1,4 +1,6 @@
 # encoding: utf-8
+
+# to provide different access rights
 READ = 1
 WRITE = 2
 EXECUTE = 4

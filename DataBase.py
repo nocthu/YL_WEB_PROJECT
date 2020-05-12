@@ -1,10 +1,9 @@
 # encoding: utf-8
-import sqlalchemy
 import sqlite3
 import datetime
 
 
-class DataBase:
+class DataBase:  # main class for connection
     def __init__(self):
         conn = sqlite3.connect("db/base.sqlite", check_same_thread=False)
         self.conn = conn
@@ -16,7 +15,7 @@ class DataBase:
         self.conn.close()
 
 
-class DataBaseUser(DataBase):
+class DataBaseUser(DataBase):  # for data about users
     def __init__(self):
         super().__init__()
         self.connection = self.get_connection()
@@ -89,7 +88,7 @@ class DataBaseUser(DataBase):
         self.connection.commit()
 
 
-class Advices(DataBase):
+class Advices(DataBase):  # for data about advices' content
     def __init__(self):
         super().__init__()
         self.connection = self.get_connection()
@@ -134,7 +133,7 @@ class Advices(DataBase):
         self.connection.commit()
 
 
-class Cities(DataBase):
+class Cities(DataBase):  # for data about cities (for weather)
     def __init__(self):
         super().__init__()
         self.connection = self.get_connection()
