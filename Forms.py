@@ -1,5 +1,3 @@
-from flask import Flask, render_template, redirect
-from flask_login import LoginManager, login_user
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, BooleanField, SubmitField, TextAreaField, RadioField
 from wtforms.validators import DataRequired

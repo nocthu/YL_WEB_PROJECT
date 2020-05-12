@@ -1,14 +1,14 @@
 import os
 import requests
 import datetime
+from socket import gethostname
 
 from flask import Flask, render_template, redirect, session, request
 from flask_ngrok import run_with_ngrok
+
 from Constants import *
 from DataBase import DataBaseUser, Advices, Cities
 from Forms import RegisterForm, LoginForm
-
-from socket import gethostname
 
 app = Flask(__name__)
 run_with_ngrok(app)
@@ -19,10 +19,23 @@ def main():
     app.run()
 
 
+def new_day():
+    date = user.get(session['user_id'])[DATE]
+    if str(datetime.date.today()) != str(date):
+        user.update(session['user_id'], 'percent', '0')
+        user.update(session['user_id'], 'posts', '0')
+        user.update(session['user_id'], 'date', str(datetime.date.today()))
+        user.update(session['user_id'], 'days_here', str(int(user.get(session['user_id'])[DAYS_HERE]) + 1))
+        if int(user.get(session['user_id'])[DAYS_HERE]) > 30 and int(session['status']) < MODERATOR:
+            user.update(session['user_id'], 'status', MODERATOR)
+            session['status'] = MODERATOR
+
+
 @app.route('/')
 @app.route('/home', methods=['GET', 'POST'])
 def choose():
     if int(session.get('status', GUEST)) & READ:
+        new_day()
         return render_template('b_1.html', pic=str(user.get(session['user_id'])[USER_FILE]))
     return render_template('b_1.html')
 
@@ -30,8 +43,8 @@ def choose():
 @app.route('/profile', methods=['GET', 'POST'])
 def profile():
     if int(session.get('status', GUEST)) & READ:
+        new_day()
         if request.method == 'GET':
-            # return render_template('a_adv.html')
             return render_template('profile.html', photo=user.get(session['user_id'])[USER_FILE])
         elif request.method == 'POST':
             new_user_name = request.form['name']
@@ -87,13 +100,6 @@ def registration():
         session['user_name'] = form.name.data
         session['status'] = USER
         session['user_id'] = user.exists(form.email.data, form.password.data)[1]
-        date = user.get(session['user_id'])[DATE]
-        if datetime.date.today() != date:
-            user.update(session['user_id'], 'percent', '0')
-            user.update(session['user_id'], 'date', str(datetime.date.today()))
-            user.update(session['user_id'], 'days_here', str(int(user.get(session['user_id'])[DAYS_HERE]) + 1))
-            if int(user.get(session['user_id'])[DAYS_HERE]) > 30 and session['status'] < MODERATOR:
-                user.update(session['user_id'], 'status', MODERATOR)
         return redirect('/home')
 
     return render_template('r_1.html', title='Регистрация', form=form)
@@ -111,13 +117,7 @@ def login():
             session['user_name'] = user.get(exists[1])[USERNAME]
             session['status'] = user.get(exists[1])[STATUS]
             session['user_id'] = exists[1]
-            date = user.get(session['user_id'])[DATE]
-            if datetime.date.today() != date:
-                user.update(session['user_id'], 'percent', '0')
-                user.update(session['user_id'], 'date', str(datetime.date.today()))
-                user.update(session['user_id'], 'days_here', str(int(user.get(exists[1])[DAYS_HERE]) + 1))
-                if int(user.get(exists[1])[DAYS_HERE]) > 30 and session['status'] < MODERATOR:
-                    user.update(session['user_id'], 'status', MODERATOR)
+            new_day()
             return redirect('/home')
         return render_template('login.html', title='Авторизация', form=form, message='Неверный логин или пароль')
     return render_template('login.html', title='Авторизация', form=form)
@@ -143,14 +143,8 @@ def waterbalance():
         return redirect('/')
 
     if request.method == 'GET':
-        date = user.get(session['user_id'])[DATE]
-        # print(date, datetime.date.today(), str(date) != str(datetime.date.today()))
-        if str(date) != str(datetime.date.today()):
-            percent = 0
-            user.update(session['user_id'], 'percent', '0')
-            user.update(session['user_id'], 'date', str(datetime.date.today()))
-        else:
-            percent = user.get(session['user_id'])[PERCENT]
+        new_day()
+        percent = user.get(session['user_id'])[PERCENT]
         return render_template('water.html', percent=(str(percent)+'%'))
     elif request.method == 'POST':
         if request.form['size'].isalpha():
@@ -200,20 +194,29 @@ def waterbalance():
 def weather():
     if not int(session.get('status', GUEST)) & READ:
         return redirect('/')
+    new_day()
     vse = cities.get_all()
+    # print(len(vse))
+    # print(vse)
+    if len(vse) > 10:
+        cities.delete(vse[0][0])
+        del vse[1]
     weather_data = []
     for item in vse:
-        city = item[1]
-        url = 'http://api.openweathermap.org/data/2.5/weather?q={}&units=metric&lang=ru&appid=eacbcd14d851ef4babf54d5073484017'
-        r = requests.get(url.format(city)).json()
-        weather_dict = {
-            'item_id': item[0],
-            'city': city,
-            'temperature': r['main']['temp'],
-            'description': r['weather'][0]['description'],
-            'icon': r['weather'][0]['icon']
-        }
-        weather_data.append(weather_dict)
+        try:
+            city = item[1]
+            url = 'http://api.openweathermap.org/data/2.5/weather?q={}&units=metric&lang=ru&appid=eacbcd14d851ef4babf54d5073484017'
+            r = requests.get(url.format(city)).json()
+            weather_dict = {
+                'item_id': item[0],
+                'city': city,
+                'temperature': r['main']['temp'],
+                'description': r['weather'][0]['description'],
+                'icon': r['weather'][0]['icon']
+            }
+            weather_data.append(weather_dict)
+        except KeyError:
+            cities.delete(item[0])
     return render_template('weather.html', weather_data=weather_data)
 
 
@@ -225,24 +228,25 @@ def add_city():
         return render_template('add_city.html')
     elif request.method == 'POST':
         city_name = request.form['city_name']
-        if city_name:
+        if city_name and city_name.lower() not in [i[1].lower() for i in cities.get_all()]:
             cities.insert(city_name)
             return redirect('/weather')
-        return render_template('add_city.html', message="Все поля должны быть заполнены")
+        return render_template('add_city.html',
+                               message="Возникла ошибка: такого города не существет или он уже тут есть")
 
 
 @app.route('/delete_city/<int:city_id>', methods=['GET'])
 def delete_city(city_id):
     if not int(session.get('status', GUEST)) & READ:
         return redirect('/')
-    if 'user_name' not in session:
-        return redirect('/login')
     cities.delete(city_id)
     return redirect("/weather")
 
 
 @app.route('/advices')
 def advice():
+    if int(session.get('status', GUEST)) & READ:
+        new_day()
     vse = advices.get_all()
     return render_template('advices.html',
                            advices=vse,
@@ -252,15 +256,16 @@ def advice():
 
 @app.route('/add_advice', methods=['GET', 'POST'])
 def add_advice():
-    if not int(session.get('status', GUEST)) & READ:
+    if not int(session.get('status', GUEST)) & WRITE:
         return redirect('/')
     if request.method == 'GET':
         return render_template('add_advice.html')
     elif request.method == 'POST':
-        if user.get(session['user_id'])[POSTS] >= 3 and user.get(session['user_id'])[STATUS] == MODERATOR:
-            return render_template('add_advice.html', message="У вас не хватает прав для добавления ещё одного совета")
         title = request.form['name']
         content = request.form['advice']
+        if int(user.get(session['user_id'])[POSTS]) >= 3 and int(user.get(session['user_id'])[STATUS]) == MODERATOR:
+            return render_template('add_advice.html', message="У вас не хватает прав для добавления ещё одного совета."
+                                                              " Без паники, завтра вы всё сможете!")
         if title and content and request.files.get('file', None):
             photo = 'static/images/' + request.files['file'].filename
             request.files['file'].save(photo)
